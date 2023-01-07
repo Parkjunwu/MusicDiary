@@ -1,0 +1,98 @@
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+platform :ios, '12.4'
+install! 'cocoapods', :deterministic_uuids => false
+
+target 'MusicDiary' do
+  config = use_native_modules!
+
+  # Flags change depending on the env values.
+  flags = get_default_flags()
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # Hermes is now enabled by default. Disable by setting this flag to false.
+    # Upcoming versions of React Native may rely on get_default_flags(), but
+    # we make it explicit here to aid in the React Native upgrade process.
+    :hermes_enabled => true,
+    :fabric_enabled => flags[:fabric_enabled],
+    # Enables Flipper.
+    #
+    # Note that if you have use_frameworks! enabled, Flipper will not work and
+    # you should disable the next line.
+    :flipper_configuration => FlipperConfiguration.enabled,
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'FirebaseAnalytics', :modular_headers => true
+  pod 'FirebaseMessaging', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+
+  target 'MusicDiaryTests' do
+    inherit! :complete
+    # Pods for testing
+  end
+
+  # https://www.npmjs.com/package/react-native-config
+  # flipper 쓰거나 더 많은 환경 필요하면 react-native-config 나 https://sodevly.github.io/react-native-env/ https://velog.io/@ricale/React-Native-%EB%B9%8C%EB%93%9C-%ED%99%98%EA%B2%BD-%EB%B6%84%EB%A6%AC 확인?
+  ENVFILES = {
+    'Debug' => '$(PODS_ROOT)/../../.env.staging',
+    'Release' => '$(PODS_ROOT)/../../.env',
+  }
+
+  post_install do |installer|
+
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+
+        # 이건 react-native-config 여러 환경
+        if target.name == 'react-native-config'
+          config.build_settings['ENVFILE'] = ENVFILES[config.name]
+        end
+
+        # https://github.com/microsoft/react-native-code-push/issues/2179#issuecomment-1006036747
+        # code push 하면 앱 꺼지고 안받아져서 넣음.
+        if target.name == 'React-jsi'
+          puts '*** Patching React-jsi pod...'
+          puts '***'
+          puts '*** - Adding NDEBUG=1 to silence the \'JSCRuntime destroyed with a dangling API object\''
+          puts '***   crash upon reload.'
+          puts '***'
+          puts '*** This is caused by realm-js being loaded at runtime, when CodePush tries to'
+          puts '*** reload the app. It\'s recommended to remove realm-js. After which this'
+          puts '*** workaround can be removed from Podfile.'
+          puts '***'
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'NDEBUG=1'
+          puts '*** Done'
+          puts '***'
+        end
+      end
+    end
+    # 여기까지
+
+    react_native_post_install(
+      installer,
+      # Set `mac_catalyst_enabled` to `true` in order to apply patches
+      # necessary for Mac Catalyst builds
+      :mac_catalyst_enabled => false
+    )
+    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  end
+
+  # 원래는 이럼
+  # post_install do |installer|
+  #   react_native_post_install(
+  #     installer,
+  #     # Set `mac_catalyst_enabled` to `true` in order to apply patches
+  #     # necessary for Mac Catalyst builds
+  #     :mac_catalyst_enabled => false
+  #   )
+  #   __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  # end
+
+end

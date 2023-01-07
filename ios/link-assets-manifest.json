@@ -1,0 +1,37 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Cafe24Ssukssuk.ttf",
+      "sha1": "bb80c4d3c72413ec82ee7abd91d27a774ee19fdb"
+    },
+    {
+      "path": "assets/fonts/Cafe24Syongsyong.ttf",
+      "sha1": "d4f448f2a50c8eb1518c6de4ddfbaf478a213677"
+    },
+    {
+      "path": "assets/fonts/ChosunCentennial.ttf",
+      "sha1": "2376150003d982b53251e71ac46be4efbadd8a7f"
+    },
+    {
+      "path": "assets/fonts/GmarketSansTTFBold.ttf",
+      "sha1": "b52c2a5f5bf990aa0c28efc2815c7d6d9a9ea260"
+    },
+    {
+      "path": "assets/fonts/GmarketSansTTFLight.ttf",
+      "sha1": "97c64d4184d42895529e70d4453cd1299a09c0b9"
+    },
+    {
+      "path": "assets/fonts/GmarketSansTTFMedium.ttf",
+      "sha1": "abf7d6ce1869bad059315fc748aa2d5d56d00892"
+    },
+    {
+      "path": "assets/fonts/KITA.ttf",
+      "sha1": "f6fc8e2904b58f6fc96c10cad6fa8e0ef7876323"
+    },
+    {
+      "path": "assets/fonts/RIDIBatang.otf",
+      "sha1": "24885b6ad9bc407081d95335f51fc792d9293f3e"
+    }
+  ]
+}

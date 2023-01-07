@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- drawable 말고 mipmap 폴더에 있어서 바꿈 -->
+    <!-- <ImageView android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/launch_screen" android:scaleType="centerCrop" /> -->
+    <ImageView android:layout_width="match_parent" android:layout_height="match_parent" android:src="@mipmap/launch_screen" android:scaleType="centerCrop" />
+</RelativeLayout>
+<!-- <?xml version="1.0" encoding="utf-8"?> <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/launch_screen" android:orientation="vertical"> </LinearLayout> -->
