@@ -26,30 +26,36 @@ export function makeStyles(params) {
     todayBackgroundColor,
     dayShape
   } = params;
-  const scaler = Math.min(containerWidth, containerHeight) / scaleFactor;
+  const deviceScale = Math.min(containerWidth, containerHeight) / scaleFactor;
+  const baseScaler = Math.min(deviceScale,1.7);
+  const dotScaler = baseScaler * 0.7; // 추가
   const SELECTED_BG_COLOR = selectedDayColor ? selectedDayColor : DEFAULT_SELECTED_BACKGROUND_COLOR;
   const SELECTED_TEXT_COLOR = selectedDayTextColor ? selectedDayTextColor : DEFAULT_SELECTED_TEXT_COLOR;
   const TODAY_BG_COLOR = todayBackgroundColor ? todayBackgroundColor : DEFAULT_TODAY_BACKGROUND_COLOR;
+
+  // styled component 에 style fontSize 주면 높이가 세팅이 안되서 넘어가는게 짤림.
+  // pad 에서 짤려서 lineHeight 추가
 
   return {
     containerWidth,
     containerHeight,
 
     calendar: {
-      height: 320*scaler,
-      marginTop: 10*scaler
+      height: 320*baseScaler,
+      marginTop: 10*baseScaler
     },
 
     dayButton: {
-      width: 30*scaler,
-      height: 30*scaler,
-      borderRadius: getBorderRadiusByShape(scaler, dayShape),
+      width: 30*baseScaler,
+      height: 30*baseScaler,
+      borderRadius: getBorderRadiusByShape(baseScaler, dayShape),
       alignSelf: 'center',
       justifyContent: 'center'
     },
 
     dayLabel: {
-      fontSize: 14*scaler,
+      fontSize: 14*baseScaler,
+      lineHeight: 14*baseScaler,
       // color: '#000',
       alignSelf: 'center'
     },
@@ -62,8 +68,8 @@ export function makeStyles(params) {
       flexDirection: 'row',
       borderBottomWidth: 1,
       borderTopWidth: 1,
-      paddingTop: 10*scaler,
-      paddingBottom: 10*scaler,
+      paddingTop: 10*baseScaler,
+      paddingBottom: 10*baseScaler,
       alignSelf: 'center',
       justifyContent: 'center',
       backgroundColor: 'rgba(0,0,0,0.0)',
@@ -76,16 +82,17 @@ export function makeStyles(params) {
     },
 
     dayLabels: {
-      width: 50*scaler,
-      fontSize: 12*scaler,
+      width: 50*baseScaler,
+      fontSize: 12*baseScaler,
+      lineHeight: 12*baseScaler,
       color: '#000',
       textAlign: 'center'
     },
 
     selectedDay: {
-      width: 30*scaler,
-      height:30*scaler,
-      borderRadius: getBorderRadiusByShape(scaler, dayShape),
+      width: 30*baseScaler,
+      height:30*baseScaler,
+      borderRadius: getBorderRadiusByShape(baseScaler, dayShape),
       alignSelf: 'center',
       justifyContent: 'center'
     },
@@ -95,10 +102,10 @@ export function makeStyles(params) {
     },
 
     selectedToday: {
-      width: 30*scaler,
-      height:30*scaler,
+      width: 30*baseScaler,
+      height:30*baseScaler,
       backgroundColor: TODAY_BG_COLOR,
-      borderRadius: getBorderRadiusByShape(scaler, dayShape),
+      borderRadius: getBorderRadiusByShape(baseScaler, dayShape),
       alignSelf: 'center',
       justifyContent: 'center'
     },
@@ -106,34 +113,34 @@ export function makeStyles(params) {
     dayWrapper: {
       alignItems: 'center',
       justifyContent: 'center',
-      width: 50*scaler,
-      height: 40*scaler,
+      width: 50*baseScaler,
+      height: 40*baseScaler,
       backgroundColor: 'rgba(0,0,0,0.0)'
     },
 
     startDayWrapper: {
-      width: 50*scaler,
-      height: 30*scaler,
-      borderTopLeftRadius: 20*scaler,
-      borderBottomLeftRadius: 20*scaler,
+      width: 50*baseScaler,
+      height: 30*baseScaler,
+      borderTopLeftRadius: 20*baseScaler,
+      borderBottomLeftRadius: 20*baseScaler,
       backgroundColor: SELECTED_BG_COLOR,
       alignSelf: 'center',
       justifyContent: 'center'
     },
 
     endDayWrapper: {
-      width: 50*scaler,
-      height: 30*scaler,
-      borderTopRightRadius: 20*scaler,
-      borderBottomRightRadius: 20*scaler,
+      width: 50*baseScaler,
+      height: 30*baseScaler,
+      borderTopRightRadius: 20*baseScaler,
+      borderBottomRightRadius: 20*baseScaler,
       backgroundColor: SELECTED_BG_COLOR,
       alignSelf: 'center',
       justifyContent: 'center'
     },
 
     inRangeDay: {
-      width: 50*scaler,
-      height: 30*scaler,
+      width: 50*baseScaler,
+      height: 30*baseScaler,
       backgroundColor: SELECTED_BG_COLOR,
       alignSelf: 'center',
       justifyContent: 'center'
@@ -145,9 +152,9 @@ export function makeStyles(params) {
       alignSelf: 'center',
       justifyContent: 'space-between',
       width: containerWidth,
-      padding: 5*scaler,
-      paddingBottom: 3*scaler,
-      marginBottom: 10*scaler,
+      padding: 5*baseScaler,
+      paddingBottom: 3*baseScaler,
+      marginBottom: 10*baseScaler,
       backgroundColor: 'rgba(0,0,0,0.0)'
     },
 
@@ -155,20 +162,21 @@ export function makeStyles(params) {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      paddingHorizontal: 3*scaler,
+      paddingHorizontal: 3*baseScaler,
     },
 
     previousContainer: {
-      marginLeft: 10*scaler,
+      marginLeft: 10*baseScaler,
     },
 
     nextContainer: {
-      marginRight: 10*scaler,
+      marginRight: 10*baseScaler,
       alignItems: 'flex-end',
     },
 
     navButtonText: {
-      fontSize: 14*scaler,
+      fontSize: 14*baseScaler,
+      lineHeight: 14*baseScaler,
     },
 
     weeks: {
@@ -180,7 +188,8 @@ export function makeStyles(params) {
     },
 
     disabledText: {
-      fontSize: 14*scaler,
+      fontSize: 14*baseScaler,
+      lineHeight: 14*baseScaler,
       // color: '#BBBBBB',
       color: 'rgba(167,167,167,0.7)',
       alignSelf: 'center',
@@ -188,30 +197,33 @@ export function makeStyles(params) {
     },
 
     selectedDisabledText: {
-      fontSize: 14*scaler,
+      fontSize: 14*baseScaler,
+      lineHeight: 14*baseScaler,
       color: '#DDDDDD',
       alignSelf: 'center',
       justifyContent: 'center'
     },
 
     monthHeaderMainText: {
-      fontSize: 15*scaler,
+      fontSize: 15*baseScaler,
+      lineHeight: 15*baseScaler,
       // color: '#000',
       textAlign: 'right',
-      marginHorizontal: 3*scaler,
+      marginHorizontal: 3*baseScaler,
     },
 
     monthButton: {
-      width: 30*scaler,
-      height: 30*scaler,
-      borderRadius: 30*scaler,
+      width: 30*baseScaler,
+      height: 30*baseScaler,
+      borderRadius: 30*baseScaler,
       alignSelf: 'center',
       justifyContent: 'center'
     },
 
     monthsHeaderText: {
       flex: 1,
-      fontSize: 16*scaler,
+      fontSize: 16*baseScaler,
+      lineHeight: 16*baseScaler,
       color: '#000',
       textAlign: 'center'
     },
@@ -222,7 +234,8 @@ export function makeStyles(params) {
     },
 
     monthText: {
-      fontSize: 14*scaler,
+      fontSize: 14*baseScaler,
+      lineHeight: 14*baseScaler,
       color: '#000',
       alignSelf: 'center'
     },
@@ -235,13 +248,14 @@ export function makeStyles(params) {
 
     monthsRow: {
       flexDirection: 'row',
-      padding: 20*scaler,
+      padding: 20*baseScaler,
     },
 
     yearHeaderMainText: {
-      fontSize: 16*scaler,
+      fontSize: 16*baseScaler,
+      lineHeight: 16*baseScaler,
       color: '#000',
-      marginHorizontal: 3*scaler,
+      marginHorizontal: 3*baseScaler,
     },
 
     yearContainer: {
@@ -250,15 +264,17 @@ export function makeStyles(params) {
     },
 
     yearText: {
-      fontSize: 14*scaler,
+      fontSize: 14*baseScaler,
+      lineHeight: 14*baseScaler,
       color: '#000',
       alignSelf: 'center'
     },
 
     yearsHeaderText: {
-      fontSize: 16*scaler,
+      fontSize: 16*baseScaler,
+      lineHeight: 16*baseScaler,
       color: '#000',
-      width: 180*scaler,
+      width: 180*baseScaler,
       textAlign: 'center'
     },
 
@@ -270,7 +286,14 @@ export function makeStyles(params) {
 
     yearsRow: {
       flexDirection: 'row',
-      padding: 20*scaler,
+      padding: 20*baseScaler,
+    },
+
+    dot: {
+      height: 5*dotScaler,
+      width: 5*dotScaler,
+      borderRadius: 10,
+      backgroundColor: "tomato",
     },
 
   };

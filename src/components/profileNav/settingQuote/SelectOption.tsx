@@ -4,10 +4,18 @@ import { FontAppliedBaseTextNeedFontSize } from "../../../styled-components/Font
 import Fontisto from 'react-native-vector-icons/Fontisto';
 // import useBackgroundColorAndTextColor from "../../../hooks/useBackgroundColorAndTextColor";
 
-const ColumnContainer = styled.View`
+const justifyContentByColumnNumber: {[key:string]: string} = {
+  "0": "flex-start",
+  "1": "center",
+  "2": "flex-end",
+};
+
+const ColumnContainer = styled.View<{columnNumber:number}>`
   flex: 1;
   flex-direction: row;
   align-items: center;
+  /* 패드 맞추려고 추가 */
+  justify-content: ${({columnNumber})=>justifyContentByColumnNumber[columnNumber+""]}; 
 `;
 const SelectContainer = styled.View`
   align-items: center;
@@ -15,6 +23,8 @@ const SelectContainer = styled.View`
 `;
 const EachFontText = styled(FontAppliedBaseTextNeedFontSize)`
   padding-left: 10px;
+  /* 패드 맞추려고 추가. 73px 은 그냥 화면보고 대충 넣은 값 */
+  width: 73px;
 `;
 
 type SelectOptionProps = {
@@ -22,6 +32,7 @@ type SelectOptionProps = {
   onPressFn: () => void;
   textColor: string;
   showingText: string;
+  columnNumber: number;
 };
 
 const SelectOption = ({
@@ -29,8 +40,9 @@ const SelectOption = ({
   onPressFn,
   textColor,
   showingText,
+  columnNumber,
 }: SelectOptionProps) => (
-  <ColumnContainer>
+  <ColumnContainer columnNumber={columnNumber}>
     <SelectContainer>
       <TouchableOpacity
         onPress={onPressFn}

@@ -113,7 +113,7 @@ const ProfileScreen = ({navigation,route}: ProfileScreenType) => {
   });
 
   useEffect(()=>{
-    console.log("route.params : " + JSON.stringify(route.params));
+    // console.log("route.params : " + JSON.stringify(route.params));
     // console.log("route.params?.newQuote : "+ route.params?.newQuote)
     const newQuote = route.params?.newQuote;
     // 안보이게 할 경우 "" 를 보내도록 만듦
@@ -177,8 +177,6 @@ const ProfileScreen = ({navigation,route}: ProfileScreenType) => {
   const [prevYtShow,setPrevYtShow] = useState(false);
   // const [prevYtPlay,setPrevYtPlay] = useState(false);
   const onPressPrevYt = (youtubeId:string) => {
-    console.log("onPressPrevYt")
-    console.log("youtubeId : "+youtubeId)
     setPrevYtId(youtubeId);
     setPrevYtShow(true);
   };

@@ -1,7 +1,8 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useColorScheme } from "react-native";
+import { Text } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import TabIcon from "../components/mainNav/TabIcon";
 import ForResetSharedNavScreen from "../components/sharedStackNav/ForResetSharedNavScreen";
 import SharedStackNav from "./SharedStackNav";
@@ -14,6 +15,8 @@ import { me } from "../__generated__/me";
 import { userNotificationUpdate } from "../__generated__/userNotificationUpdate";
 import { USER_NOTIFICATION_UPDATE } from "../gql/forCodeGen";
 import subscribeToMoreExecuteOnlyOnceNeedWholeSubscribeToMoreFnAndQueryData from "../logic/subscribeToMoreExcuteOnlyOnce";
+import BoardNav from "./BoardNav";
+import useIsDarkMode from "../hooks/useIsDarkMode";
 
 
 const Tab = createBottomTabNavigator<MainNavTabParamsList>();
@@ -63,7 +66,8 @@ const MainNav_useCache = () => {
   // subscription 한번만 실행되게 하기 위함
   subscribeToMoreExecuteOnlyOnceNeedWholeSubscribeToMoreFnAndQueryData(wholeSubscribeToMoreFn,data?.me?.totalUnreadNotification);
 
-  const darkModeSubscription = useColorScheme();
+  // const darkModeSubscription = useColorScheme();
+  const isDarkMode = useIsDarkMode();
 
   // Upload, List, Notification, Me
   return (
@@ -71,28 +75,14 @@ const MainNav_useCache = () => {
       screenOptions={{
         headerShown:false,
         tabBarStyle:{
-          backgroundColor: darkModeSubscription === "light" ? "white" : "black",
-          borderTopColor: darkModeSubscription === "light" ? "rgba(0,0,0,0.5)":"rgba(255,255,255,0.5)",
+          backgroundColor: isDarkMode ? "black" : "white",
+          borderTopColor: isDarkMode ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)",
         },
-        tabBarActiveTintColor: darkModeSubscription === "light" ? "rgba(0,0,0,0.7)" : "white",
+        tabBarActiveTintColor: isDarkMode ? "white" : "rgba(0,0,0,0.7)",
         tabBarShowLabel:false,
       }}
       initialRouteName="UploadDiaryTab"
     >
-
-      <Tab.Screen
-        name="MyDiaryListTab"
-        options={{
-          tabBarIcon:({focused,color})=>
-          <TabIcon iconName="md-book" focused={focused} color={color}/>
-        }}
-      >
-        {() => (
-          <ForResetSharedNavScreen>
-            <SharedStackNav screenName="MyDiaryList"/>
-          </ForResetSharedNavScreen>
-        )} 
-      </Tab.Screen>
 
       <Tab.Screen
         name="UploadDiaryTab"
@@ -107,6 +97,30 @@ const MainNav_useCache = () => {
           numberOfUnreadIfZeroIsNull={numberOfUnreadIfZeroIsNull}
         />}
       </Tab.Screen>
+
+      <Tab.Screen
+        name="MyDiaryListTab"
+        options={{
+          tabBarIcon:({focused,color})=>
+          <TabIcon iconName="md-book" focused={focused} color={color}/>
+          // <Text style={{fontSize:11,fontWeight:"900",color}}>TODAY</Text>
+        }}
+      >
+        {() => (
+          <ForResetSharedNavScreen>
+            <SharedStackNav screenName="MyDiaryList"/>
+          </ForResetSharedNavScreen>
+        )} 
+      </Tab.Screen>
+
+      <Tab.Screen
+        name="BoardTab"
+        component={BoardNav}
+        options={{
+          tabBarIcon:({focused,color})=>
+          <MaterialCommunityIcons name={focused ? "clipboard-text" : "clipboard-text-outline"} size={24} color={color} />
+        }}
+      />
 
       <Tab.Screen
         name="ProfileListTab"

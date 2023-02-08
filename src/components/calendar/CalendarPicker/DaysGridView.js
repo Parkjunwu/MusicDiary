@@ -216,6 +216,7 @@ export default class DaysGridView extends Component {
             );
           }
         } else {
+          // 얘임.
           if (dayOfMonth <= numDaysInMonth) {
             lastFilledRow = i;
             daysGrid[i].push(this.renderDayInCurrentMonth(dayOfMonth++));
@@ -236,6 +237,15 @@ export default class DaysGridView extends Component {
   }
 
   render() {
+    // const grid = Object.values(this.state.daysGrid);
+    // // const components = grid.flat().map(obj=>obj.component)
+    // const components = grid.flat()
+    // if(components[10].month === 9) {
+    //   console.log("!!!!")
+    //   const componentss = components.map(obj=>obj.component)
+    //   console.log(componentss)
+    // }
+
     const { styles } = this.props;
     const { daysGrid } = this.state;
     const renderedDaysGrid = daysGrid.map((weekRow, i) => (

@@ -7,6 +7,7 @@ import { getRealmAllDiaries } from "../realm";
 import { useCallback } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TEMPORARY_EDIT_DIARY, TEMPORARY_UPLOAD_DIARY } from "../temporaryDiary/constant";
+import { alreadyFetchedQuerySet } from "../cursorPagination";
 
 const DELETE_PUSH_NOTI_TOKEN = gql`
   mutation deletePushNotiToken {
@@ -28,6 +29,8 @@ const useLogOut = () => {
       if(!deleteDeviceToken.data?.deletePushNotiToken.ok) {
         console.log("useLogOut 의 deletePushNotiToken / 토큰 삭제 실패");
       }
+
+      alreadyFetchedQuerySet.clear(); // 추가.. 하는게 맞나? 확인
 
       // 캐시 삭제를 accessTokenVar 밑에 놓으니까 오류남.. 왠진 모름.
       await client.resetStore();

@@ -768,7 +768,7 @@
 				CODE_SIGN_ENTITLEMENTS = MusicDiary/MusicDiary.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 30;
+				CURRENT_PROJECT_VERSION = 32;
 				DEVELOPMENT_TEAM = 8V3YF2YWRH;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = MusicDiary/Info.plist;
@@ -787,6 +787,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "RNVideoProcessing/MusicDiary-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -800,7 +801,7 @@
 				CODE_SIGN_ENTITLEMENTS = MusicDiary/MusicDiary.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 30;
+				CURRENT_PROJECT_VERSION = 32;
 				DEVELOPMENT_TEAM = 8V3YF2YWRH;
 				INFOPLIST_FILE = MusicDiary/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -817,6 +818,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "MusicDiary-production-provisioning";
 				SWIFT_OBJC_BRIDGING_HEADER = "RNVideoProcessing/MusicDiary-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

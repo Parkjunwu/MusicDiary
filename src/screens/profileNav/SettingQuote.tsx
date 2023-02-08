@@ -80,6 +80,7 @@ const SettingQuote = () => {
             onPressFn={onPressAllSelect}
             textColor={textColor}
             showingText="전체 선택"
+            columnNumber={0}
           />
         </RowContainer>
 
@@ -95,6 +96,7 @@ const SettingQuote = () => {
               onPressFn={()=>onPressSelectQuote(isSelected,nowNumber)}
               textColor={textColor}
               showingText={nowQuote}
+              columnNumber={columnNumber}
             />
           })}
         </RowContainer>

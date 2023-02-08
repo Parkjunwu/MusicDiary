@@ -30,12 +30,21 @@
 import { useEffect, useState } from 'react';
 import Orientation, { OrientationType } from "react-native-orientation-locker";
 
+const orientationAndSimpleChain:{[key:OrientationType]:string} = {
+  "PORTRAIT": "PORTRAIT",
+  "PORTRAIT-UPSIDEDOWN": "PORTRAIT",
+  "LANDSCAPE-LEFT": "LANDSCAPE",
+  "LANDSCAPE-RIGHT": "LANDSCAPE",
+};
+
 export const useCustomOrientationListener = () => {
 
   const [viewOrientation,setViewOrientation] = useState<"PORTRAIT"|"LANDSCAPE">("PORTRAIT");
 
   useEffect(() => {
-    const setOrientation = (orientation:OrientationType) => setViewOrientation(orientation === "PORTRAIT" ? "PORTRAIT" : "LANDSCAPE");
+    // const setOrientation = (orientation:OrientationType) => setViewOrientation(orientation === "PORTRAIT" ? "PORTRAIT" : "LANDSCAPE");
+    // 패드라서 이렇게 했는데 만약에 폰에서는 안할거면 그것도 따로 처리해줘야할듯
+    const setOrientation = (orientation:OrientationType) => setViewOrientation(orientationAndSimpleChain[orientation]);
     // const setOrientation = (orientation:OrientationType) => {
     //   setViewOrientation(orientation === "PORTRAIT" ? "PORTRAIT" : "LANDSCAPE");
     //   // console.log("orientation : "+ orientation);

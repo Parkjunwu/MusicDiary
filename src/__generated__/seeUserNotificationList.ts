@@ -14,6 +14,9 @@ export interface seeUserNotificationList_seeUserNotificationList_notification {
   which: string;
   createdAt: string;
   diaryId: number | null;
+  boardId: number | null;
+  commentId: number | null;
+  commentOfCommentId: number | null;
 }
 
 export interface seeUserNotificationList_seeUserNotificationList {

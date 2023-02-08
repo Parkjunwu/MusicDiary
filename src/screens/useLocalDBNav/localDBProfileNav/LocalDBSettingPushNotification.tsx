@@ -11,6 +11,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { deleteAllLocalNotifications, setLocalScheduledAlertWriteNotificationNeedHalfDayHourMinute } from "../../../pushNotification/localPushNotification";
 import SwitchWithExplanation from "../../../components/profileNav/settingPushNotification/SwitchWithExplanation";
 import TimeScrollPicker from "../../../components/profileNav/settingPushNotification/TimeScrollPicker";
+import UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth from "../../../components/upload/UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth";
 
 const BottomContainer = styled.View`
   flex-direction: row;
@@ -143,7 +144,7 @@ const LocalDBSettingPushNotification = ({navigation}:LocalDBSettingPushNotificat
   },[isLocalAlertEnabled,halfDay,hour,minute,]);
 
   return (
-    <BaseContainer>
+    <UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
       {settingReady && <>
         <SwitchWithExplanation
           explanation="일기 쓰기 알림 설정"
@@ -168,7 +169,7 @@ const LocalDBSettingPushNotification = ({navigation}:LocalDBSettingPushNotificat
           />
         </BottomContainer>
       </>}
-    </BaseContainer>
+    </UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
   );
 };
 

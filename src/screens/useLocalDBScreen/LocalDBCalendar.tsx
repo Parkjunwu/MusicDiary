@@ -5,7 +5,7 @@ import { realmYearMonthType } from "../../types/realm/realmDiaryType";
 import useCustomOrientationListener from "../../hooks/useCustomOrientationListener";
 import styled from "styled-components/native";
 import { View } from "react-native";
-import AgendaList from "../../components/calendar/AgendaList";
+// import AgendaList from "../../components/calendar/AgendaList";
 import { colors } from "../../js-assets/color";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import CalendarPicker from "../../components/calendar/CalendarPicker";

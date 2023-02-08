@@ -34,7 +34,7 @@ type useMakeTitleSubmitBtnAndCancelBtnOnHeaderProps = {
   youtubeId: string | null,
   onPressSubmit: () => void;
   onPressCancel: () => boolean;
-  whichComponent: "UploadDiary"|"EditDiary"|"EditDiaryForTemporaryDiaryData";
+  whichComponent: "UploadDiary"|"EditDiary"|"EditDiaryForTemporaryDiaryData"|"UploadBoard"|"EditBoard";
   // getChangeStatus?: () => {
   //   isFileChanged: boolean;
   //   isTitleChanged: boolean;
@@ -62,9 +62,9 @@ const useMakeTitleSubmitBtnAndCancelBtnOnHeader = ({
 
     // const alertCheck = getChangeStatus === undefined ? isSomethingWrite : isSomethingWrite && !getChangeStatus().isNothingChanged;
 
-    const isUploadDiary = whichComponent === "UploadDiary";
+    const isUploadComponent = whichComponent === "UploadDiary" ||  whichComponent === "UploadBoard";
     
-    const submitText = isUploadDiary ? "업로드" : "수정";
+    const submitText = isUploadComponent ? "업로드" : "수정";
 
     navigation.setOptions({
       headerRight:()=>(
@@ -81,7 +81,7 @@ const useMakeTitleSubmitBtnAndCancelBtnOnHeader = ({
       //   alertCheck={alertCheck}
       // />,
       headerLeft:({tintColor}) => <TouchableOpacity onPress={onPressCancel}>
-        <Ionicons name={isUploadDiary ? "chevron-back" : "close"} size={24} color={tintColor}/>
+        <Ionicons name={isUploadComponent ? "chevron-back" : "close"} size={24} color={tintColor}/>
       </TouchableOpacity>,
       headerTitle:({tintColor}) => <PlusPhotoBtn
         tintColor={tintColor ?? ""} from={whichComponent} nowFileNumber={files.length}

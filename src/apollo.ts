@@ -6,7 +6,7 @@ import {onError} from "@apollo/client/link/error"
 import { createUploadLink } from "apollo-upload-client";
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
-import { cursorPaginationPreventCacheDouble, cursorPaginationPreventCacheDoubleWithIsNotFetchMore } from "./cursorPagination";
+import { cursorPaginationForSearchNeedDataFieldName, cursorPaginationPreventCacheDouble, cursorPaginationPreventCacheDoubleWithIsNotFetchMore, editedCursorPaginationWithIsNotFetchMore } from "./cursorPagination";
 import { realmDiaryType } from "./types/realm/realmDiaryType";
 import Config from "react-native-config";
 
@@ -134,9 +134,59 @@ export const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
-        seeUserNotificationList:cursorPaginationPreventCacheDoubleWithIsNotFetchMore("seeUserNotificationList","notification"),
+        // seeNewPostFeed: offsetLimitPagination(),
+        // seeFollowersFeed: offsetLimitPagination(),
+        // // 얘는 Pagination 필요 없을 듯
+        // // seePetLogComments: offsetLimitPagination(["petLogId"]),
+        // // isNotFetchMore 있는 애. 다른 쿼리 들어올 수 있는 애
+        // getRoomMessages: cursorPaginationCanGetAnotherQueryNeedDataFieldNameAndKeyArgsIfHave("messages","roomId"),
+        // seeRooms:cursorPaginationCanGetAnotherQueryNeedDataFieldNameAndKeyArgsIfHave("rooms"),
+        // seePostLikes:cursorPaginationCanGetAnotherQueryNeedDataFieldNameAndKeyArgsIfHave("likeUsers","id"),
+        // seeCommentLikes:cursorPaginationCanGetAnotherQueryNeedDataFieldNameAndKeyArgsIfHave("likeUsers","commentId"),
+        // seeCommentOfCommentLikes:cursorPaginationCanGetAnotherQueryNeedDataFieldNameAndKeyArgsIfHave("likeUsers","commentOfCommentId"),
+        // seeFollowers:cursorPaginationCanGetAnotherQueryNeedDataFieldNameAndKeyArgsIfHave("followers","id"),
+        // seeFollowing:cursorPaginationCanGetAnotherQueryNeedDataFieldNameAndKeyArgsIfHave("following","id"),
+        // seeUserNotificationList:cursorPaginationCanGetAnotherQueryNeedDataFieldNameAndKeyArgsIfHave("notification"),
+        // // 얘는 이유는 모르겠는데 refetch 가 existing 을 받음. 그래서 따로 만듦
+        // seeComments:cursorPaginationForSeeComments(),
+        // seeCommentOfComments:cursorPaginationCanGetAnotherQueryNeedDataFieldNameAndKeyArgsIfHave("commentOfComments","commentId"),
+        // // offsetPagination 으로
+        // // seePetLogComments:cursorPaginationCanGetAnotherQueryNeedDataFieldNameAndKeyArgsIfHave("comments","petLogId"),
+        // seeNewPetLogList:cursorPaginationCanGetAnotherQueryNeedDataFieldNameAndKeyArgsIfHave("petLogs"),
+        // seePetLogCommentOfComments:cursorPaginationCanGetAnotherQueryNeedDataFieldNameAndKeyArgsIfHave("commentOfComments","petLogCommentId"),
+        // getMePetLogs:cursorPaginationCanGetAnotherQueryNeedDataFieldNameAndKeyArgsIfHave("petLogs"),
+
+        // // 이걸로 바꾸고 local only field 넣어. 근데 그냥 쓰던거 쓰는게 나을듯.
+        // seeBlockUsers:forSeeBlockUsers("users"),
+
+        // // isNotFetchMore 없는 애. 다른 쿼리 못들어옴
+        // getUserPosts:cursorPaginationNeedDataFieldNameAndKeyArgsIfHave("posts","userId"),
+        // getUserPetLogs:cursorPaginationNeedDataFieldNameAndKeyArgsIfHave("petLogs","userId"),
+        // getMePosts:cursorPaginationNeedDataFieldNameAndKeyArgsIfHave("posts"),
+        // // getMePetLogs:cursorPaginationNeedDataFieldNameAndKeyArgsIfHave("petLogs"),
+        // seeHashTag:cursorPaginationNeedDataFieldNameAndKeyArgsIfHave("posts","name"),
+        // searchPosts:cursorPaginationNeedDataFieldNameAndKeyArgsIfHave("posts","keyword"),
+
+        // seeUserNotificationList:cursorPaginationCanGetAnotherQueryNeedDataFieldNameAndKeyArgsIfHave("notification"),
+        // getMyDiaryList:cursorPaginationCanGetAnotherQueryNeedDataFieldNameAndKeyArgsIfHave("diaries"),
+        // searchMyDiaries:cursorPaginationNeedDataFieldNameAndKeyArgsIfHave("diaries","keyword"),
+        
+        // seeUserNotificationList:cursorPaginationPreventCacheDoubleWithIsNotFetchMore("seeUserNotificationList","notification"),
+        seeUserNotificationList:editedCursorPaginationWithIsNotFetchMore("notification"),
         getMyDiaryList:cursorPaginationPreventCacheDoubleWithIsNotFetchMore("getMyDiaryList","diaries"),
-        searchMyDiaries:cursorPaginationPreventCacheDouble("searchMyDiaries","diaries","keyword"),
+        // seeNewBoardList:cursorPaginationPreventCacheDoubleWithIsNotFetchMore("seeNewBoardList","boards"),
+        seeNewBoardList:editedCursorPaginationWithIsNotFetchMore("boards"),
+        // search 는 따로 만듦
+        searchMyDiaries:cursorPaginationForSearchNeedDataFieldName("diaries"),
+        searchBoards:cursorPaginationForSearchNeedDataFieldName("boards"),
+        // seeBoardComments:cursorPaginationPreventCacheDoubleWithIsNotFetchMore("seeBoardComments","boards","boardId"), // 얘는 pagination 필요가 없네 딱 페이지만 보여주니까
+        seeBoardCommentOfComments:cursorPaginationPreventCacheDoubleWithIsNotFetchMore("seeBoardCommentOfComments","commentOfComments","boardCommentId"),
+        getMyBoardList:editedCursorPaginationWithIsNotFetchMore("boards"),
+        getUserPostList:cursorPaginationPreventCacheDouble("getUserPostList","boards"),
+        seeBlockUsers:cursorPaginationPreventCacheDoubleWithIsNotFetchMore("seeBlockUsers","users"),
+        // seeBoardLikes:cursorPaginationPreventCacheDoubleWithIsNotFetchMore("seeBoardLikes","likeUsers"), // 지금은 안씀
+        // seeBoardCommentLikes:cursorPaginationPreventCacheDoubleWithIsNotFetchMore("seeBoardCommentLikes","likeUsers"), // 지금은 안씀
+        // seeBoardCommentOfCommentLikes:cursorPaginationPreventCacheDoubleWithIsNotFetchMore("seeBoardCommentOfCommentLikes","likeUsers"), // 지금은 안씀
       }
     }
   }

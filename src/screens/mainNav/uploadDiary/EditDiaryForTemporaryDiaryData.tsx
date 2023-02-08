@@ -1,13 +1,11 @@
 import React, { useRef, useState } from "react";
-import { useWindowDimensions, View } from "react-native";
+import { View } from "react-native";
 import { FileInfo } from "../../../types/upload/fileType";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { UploadDiaryTabStackParamsList } from "../../../types/navigation/homeNavStackParamsList";
 import TitleInput from "../../../components/upload/TitleInput";
 import BodyInput from "../../../components/upload/BodyInput";
 import useEditDiaryMutation from "../../../hooks/editDiary/useEditDiaryMutation";
-import useBackgroundColorAndTextColor from "../../../hooks/useBackgroundColorAndTextColor";
-import usePlaceHolderColor from "../../../hooks/usePlaceHolderColor";
 import AnySizeDragSortableView from "../../../components/upload/AnySizeDragSortableView";
 import useIfGetPlusFilesThenAddToNowFilesAndSetBodyAndAddingPosition from "../../../hooks/uploadAndEdit/useIfGetPlusFilesThenSetFilesAndBodyAndFileAddingPosition";
 import useDeletePhoto from "../../../hooks/uploadAndEdit/useDeletePhoto";
@@ -21,6 +19,9 @@ import useMakeAndroidBackHandler from "../../../hooks/useLocalDBScreen/useMakeAn
 import useEditDiaryCancelLogic from "../../../hooks/editDiary/useEditDiaryCancelLogic";
 import useEditDiaryStoreTemporaryWhenGoToBackground from "../../../hooks/editDiary/useEditDiaryStoreTemporaryWhenGoToBackground";
 import useIfTemporaryHasYoutubeIdThenSetYoutubeIdAndTitle from "../../../hooks/editDiaryForTemporaryDiaryData/useIfTemporaryHasYoutubeIdThenSetYoutubeIdAndTitle";
+import useGetWidthDealWithBigScreenNeedImageHorizontalEmptySpaceBase20 from "../../../hooks/forDealWithBigScreen/useGetWidthDealWithBigScreenNeedImageHorizontalEmptySpaceBase20";
+import UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth from "../../../components/upload/UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth";
+import useColorsChangedByDarkMode from "../../../hooks/useColorsChangedByDarkMode";
 // import { getYoutubeMeta } from "react-native-youtube-iframe";
 
 // type EditDiaryProps = NativeStackScreenProps<MyDiaryListTabStackParamsList|NotificationTabStackParamsList,"EditDiary">;
@@ -170,18 +171,13 @@ const EditDiaryForTemporaryDiaryData = ({navigation,route}:EditDiaryForTemporary
   });
 
   
-  const { width:windowWidth } = useWindowDimensions();
-
   const padding = 10;
 
-  const paddingLeftAndRight = padding * 2;
-
-  const imageWidth = windowWidth - paddingLeftAndRight;
+  const {imageWidth} = useGetWidthDealWithBigScreenNeedImageHorizontalEmptySpaceBase20(padding*2);
 
   const sortableViewRef = useRef<AnySizeDragSortableView>(null);
 
-  const {backgroundColor,textColor} = useBackgroundColorAndTextColor();
-  const placeholderTextColor = usePlaceHolderColor();
+  const { backgroundColor, textColor, placeholderTextColor } = useColorsChangedByDarkMode();
 
   const renderItem = useMakeScrollableImage({
     setFileAddingPosition,
@@ -230,39 +226,41 @@ const EditDiaryForTemporaryDiaryData = ({navigation,route}:EditDiaryForTemporary
 
 
   return (
-    <AnySizeDragSortableView
-      ref={sortableViewRef}
-      dataSource={files}
-      // 같은 사진을 넣을 수도 있음.... uuid 로 넣을까?
-      keyExtractor={(item:FileInfo) => item.uri}
-      renderItem={renderItem}
-      onDataChange={(data:FileInfo[], callback:()=>void)=> {
-        setFiles(data);
-        callback();
-      }}
-      renderHeaderView = {renderHeaderView}
-      wrapperStyle={{
-        flex: 1,
-        padding,
-        backgroundColor,
-      }}
-      body={body}
-      placeholderTextColor={placeholderTextColor}
-      textColor={textColor}
-      setBody={setBody}
-      // headerViewHeight={headerViewHeight.current}
-      headerViewHeight={headerViewHeight}
-      setFileAddingPosition={setFileAddingPosition}
-      fontFamily={fontFamily}
-      // renderBottomView = {renderBottomView}
-      // bottomViewHeight={bottomViewHeight}
-      // movedWrapStyle={styles.item_moved}
-      // onDragEnd={()=>{
-      //     this.setState({
-      //         movedKey: null
-      //     })
-      // }}
-    />
+    <UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
+      <AnySizeDragSortableView
+        ref={sortableViewRef}
+        dataSource={files}
+        // 같은 사진을 넣을 수도 있음.... uuid 로 넣을까?
+        keyExtractor={(item:FileInfo) => item.uri}
+        renderItem={renderItem}
+        onDataChange={(data:FileInfo[], callback:()=>void)=> {
+          setFiles(data);
+          callback();
+        }}
+        renderHeaderView = {renderHeaderView}
+        wrapperStyle={{
+          flex: 1,
+          padding,
+          backgroundColor,
+        }}
+        body={body}
+        placeholderTextColor={placeholderTextColor}
+        textColor={textColor}
+        setBody={setBody}
+        // headerViewHeight={headerViewHeight.current}
+        headerViewHeight={headerViewHeight}
+        setFileAddingPosition={setFileAddingPosition}
+        fontFamily={fontFamily}
+        // renderBottomView = {renderBottomView}
+        // bottomViewHeight={bottomViewHeight}
+        // movedWrapStyle={styles.item_moved}
+        // onDragEnd={()=>{
+        //     this.setState({
+        //         movedKey: null
+        //     })
+        // }}
+      />
+    </UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
   );
 };
 

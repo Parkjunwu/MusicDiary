@@ -153,7 +153,7 @@ const LocalDBProfileScreen = ({navigation,route}: LocalDBProfileScreenThreeType)
     
     const youtubeArr = [];
     const allDiaryArr = allRealmDiariesVar();
-    for(let i=0; i>allDiaryArr.length; i++){
+    for(let i=0; i<allDiaryArr.length; i++){
       const youtube = allDiaryArr[i].youtubeId;
       youtube && youtubeArr.push(youtube);
     }

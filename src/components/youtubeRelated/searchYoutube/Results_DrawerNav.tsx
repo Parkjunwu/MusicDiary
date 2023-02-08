@@ -21,7 +21,7 @@ const EDIT_OR_DELETE_YOUTUBE_MUSIC = gql`
   }
 `;
 
-const Results_MyDiaryNav = (props:BaseResultsProps) => {
+const Results_DrawerNav = (props:BaseResultsProps) => {
 
   const navigation = useNavigation();
 
@@ -58,7 +58,7 @@ const Results_MyDiaryNav = (props:BaseResultsProps) => {
 
       return true;
     } catch (e) {
-      console.error("Results_MyDiaryNav // editOrDeleteYoutubeMusic 에러 : "+e)
+      console.error("Results_DrawerNav // editOrDeleteYoutubeMusic 에러 : "+e)
       return false;
     }
   };
@@ -71,4 +71,4 @@ const Results_MyDiaryNav = (props:BaseResultsProps) => {
   );
 };
 
-export default Results_MyDiaryNav;
+export default Results_DrawerNav;

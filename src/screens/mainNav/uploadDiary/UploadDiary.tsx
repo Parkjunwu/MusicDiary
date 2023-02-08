@@ -1,12 +1,10 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useRef, useState } from "react";
-import { useWindowDimensions, View } from "react-native";
+import { View } from "react-native";
 import AnySizeDragSortableView from "../../../components/upload/AnySizeDragSortableView";
 import BodyInput from "../../../components/upload/BodyInput";
 import TitleInput from "../../../components/upload/TitleInput";
 import useSetYoutubeStateNeedRoute from "../../../hooks/uploadDiary/useSetYoutubeStateNeedRoute";
-import useBackgroundColorAndTextColor from "../../../hooks/useBackgroundColorAndTextColor";
-import usePlaceHolderColor from "../../../hooks/usePlaceHolderColor";
 import { UploadDiaryTabStackParamsList } from "../../../types/navigation/homeNavStackParamsList";
 import { FileInfo } from "../../../types/upload/fileType";
 import MusicState from "../../../components/youtubeRelated/uploadOrEdit/MusicState";
@@ -21,6 +19,9 @@ import useMakeAndroidBackHandler from "../../../hooks/useLocalDBScreen/useMakeAn
 import useUploadDiaryCancelLogic from "../../../hooks/uploadDiary/useUploadDiaryCancelLogic";
 import useFirstGetAndSetTemporaryDiary from "../../../hooks/uploadDiary/useFirstGetAndSetTemporaryDiary";
 import useUploadDiaryStoreTemporaryWhenGoToBackground from "../../../hooks/uploadDiary/useUploadDiaryStoreTemporaryWhenGoToBackground";
+import UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth from "../../../components/upload/UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth";
+import useGetWidthDealWithBigScreenNeedImageHorizontalEmptySpaceBase20 from "../../../hooks/forDealWithBigScreen/useGetWidthDealWithBigScreenNeedImageHorizontalEmptySpaceBase20";
+import useColorsChangedByDarkMode from "../../../hooks/useColorsChangedByDarkMode";
 
 type UploadDiaryProps = NativeStackScreenProps<UploadDiaryTabStackParamsList,"UploadDiary">;
 
@@ -196,18 +197,17 @@ const UploadDiary = ({route}:UploadDiaryProps) => {
   });
   
 
-  const { width:windowWidth } = useWindowDimensions();
-
   const padding = 10;
 
-  const paddingLeftAndRight = padding * 2;
-
-  const imageWidth = windowWidth - paddingLeftAndRight;
+  const {imageWidth} = useGetWidthDealWithBigScreenNeedImageHorizontalEmptySpaceBase20(padding*2);
 
   const sortableViewRef = useRef<AnySizeDragSortableView>(null);
 
-  const {backgroundColor,textColor} = useBackgroundColorAndTextColor();
-  const placeholderTextColor = usePlaceHolderColor();
+  const {
+    backgroundColor,
+    textColor,
+    placeholderTextColor,
+  } = useColorsChangedByDarkMode();
 
   const renderItem = useMakeScrollableImage({
     setFileAddingPosition,
@@ -254,41 +254,42 @@ const UploadDiary = ({route}:UploadDiaryProps) => {
     </View>
   );
 
-
   return (
-    <AnySizeDragSortableView
-      ref={sortableViewRef}
-      dataSource={files}
-      // 같은 사진을 넣을 수도 있음.... uuid 로 넣을까?
-      keyExtractor={(item:FileInfo) => item.uri}
-      renderItem={renderItem}
-      onDataChange={(data:FileInfo[], callback:()=>void)=> {
-        setFiles(data);
-        callback();
-      }}
-      renderHeaderView = {renderHeaderView}
-      wrapperStyle={{
-        flex: 1,
-        padding,
-        backgroundColor,
-      }}
-      body={body}
-      placeholderTextColor={placeholderTextColor}
-      textColor={textColor}
-      setBody={setBody}
-      // headerViewHeight={headerViewHeight.current}
-      headerViewHeight={headerViewHeight}
-      setFileAddingPosition={setFileAddingPosition}
-      fontFamily={fontFamily}
-      // renderBottomView = {renderBottomView}
-      // bottomViewHeight={bottomViewHeight}
-      // movedWrapStyle={styles.item_moved}
-      // onDragEnd={()=>{
-      //     this.setState({
-      //         movedKey: null
-      //     })
-      // }}
-    />
+    <UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
+      <AnySizeDragSortableView
+        ref={sortableViewRef}
+        dataSource={files}
+        // 같은 사진을 넣을 수도 있음.... uuid 로 넣을까?
+        keyExtractor={(item:FileInfo) => item.uri}
+        renderItem={renderItem}
+        onDataChange={(data:FileInfo[], callback:()=>void)=> {
+          setFiles(data);
+          callback();
+        }}
+        renderHeaderView = {renderHeaderView}
+        wrapperStyle={{
+          flex: 1,
+          padding,
+          backgroundColor,
+        }}
+        body={body}
+        placeholderTextColor={placeholderTextColor}
+        textColor={textColor}
+        setBody={setBody}
+        // headerViewHeight={headerViewHeight.current}
+        headerViewHeight={headerViewHeight}
+        setFileAddingPosition={setFileAddingPosition}
+        fontFamily={fontFamily}
+        // renderBottomView = {renderBottomView}
+        // bottomViewHeight={bottomViewHeight}
+        // movedWrapStyle={styles.item_moved}
+        // onDragEnd={()=>{
+        //     this.setState({
+        //         movedKey: null
+        //     })
+        // }}
+      />
+    </UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
   );
 };
 

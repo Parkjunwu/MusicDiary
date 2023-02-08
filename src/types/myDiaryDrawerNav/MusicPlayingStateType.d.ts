@@ -1,13 +1,6 @@
 export type MusicPlayAndBtnType = {
   color: string,
-  // checkIfMusicUrlThenPlay: () => void,
-  // isHaveMusic: boolean
-  music: false | seeMyDiary_seeMyDiary_diary_music | null
-  // focused: boolean,
-  // isMusicPlaying: boolean,
-  // setIsNowMusicPlaying: React.Dispatch<React.SetStateAction<boolean>>,
-  // youtubeMusicShow: boolean,
-  // switchYoutubeMusicShow: () => void,
+  music: false | seeMyDiary_seeMyDiary_diary_music | null,
   diary1MusicPlaying: boolean,
   setDiary1MusicPlaying: React.Dispatch<React.SetStateAction<boolean>>,
   diary2MusicPlaying: boolean,
@@ -22,4 +15,11 @@ export type MusicPlayAndBtnType = {
 export type MusicPlayingStateType = MusicPlayAndBtnType
 
 
-// export default MusicPlayingStateType;
+export type NotificationDiaryMusicPlayAndBtnType = {
+  color: string,
+  music: false | seeMyDiary_seeMyDiary_diary_music | null,
+  isMusicPlaying: boolean,
+  setIsNowMusicPlaying: React.Dispatch<React.SetStateAction<boolean>>,
+};
+
+export type NotificationDiaryMusicPlayingStateType = NotificationDiaryMusicPlayAndBtnType;

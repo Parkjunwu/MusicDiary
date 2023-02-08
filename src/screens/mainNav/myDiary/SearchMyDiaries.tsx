@@ -7,12 +7,12 @@ import { gql, useLazyQuery } from "@apollo/client";
 import DismissKeyboard from "../../../components/shared/DismissKeyboard";
 import cursorPaginationFetchMore from "../../../logic/cursorPaginationFetchMore";
 import DiarySummary from "../../../components/myDiaryList/DiarySummary";
-import useIsDarkMode from "../../../hooks/useIsDarkMode";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MyDiaryListTabStackParamsList } from "../../../types/navigation/homeNavStackParamsList";
 import { searchMyDiaries, searchMyDiariesVariables, searchMyDiaries_searchMyDiaries_diaries } from "../../../__generated__/searchMyDiaries";
 import { FontAppliedBaseTextInputNeedFontSize } from "../../../styled-components/FontAppliedComponents";
 import { fromWhere } from "../../../apollo";
+import useColorsChangedByDarkMode from "../../../hooks/useColorsChangedByDarkMode";
 
 const SEARCH_MY_DIARIES = gql`
   query searchMyDiaries($keyword:String!,$cursorId:Int) {
@@ -78,7 +78,7 @@ type SearchMyDiariesProps = NativeStackScreenProps<MyDiaryListTabStackParamsList
 
 const SearchMyDiaries = ({navigation}:SearchMyDiariesProps) => {
   const {width} = useWindowDimensions();
-  const isDarkMode = useIsDarkMode();
+  // const isDarkMode = useIsDarkMode();
   const [value,setValue] = useState("");
 
   const [searchMyDiaries,{data,fetchMore}] = useLazyQuery<searchMyDiaries,searchMyDiariesVariables>(SEARCH_MY_DIARIES,{
@@ -124,6 +124,8 @@ const SearchMyDiaries = ({navigation}:SearchMyDiariesProps) => {
     await cursorPaginationFetchMore(data?.searchMyDiaries,fetchMoreFn);
   };
 
+  const {textColor,placeholderTextColor} = useColorsChangedByDarkMode();
+
   return (
   <WholeContainer>
     <DismissKeyboard>
@@ -132,20 +134,20 @@ const SearchMyDiaries = ({navigation}:SearchMyDiariesProps) => {
 
         <OptionContainer>
           <GoBackBtn onPress={navigation.goBack}>
-            <Ionicons name="chevron-back" size={28} color={isDarkMode ? "white" : "black" } />
+            <Ionicons name="chevron-back" size={28} color={textColor} />
           </GoBackBtn>
         </OptionContainer> */}
         <>
         <HeaderContainer>
           <HeaderSearch width={width}>
             <TouchableOpacity onPress={onVaild}>
-              <Ionicons name="search" size={30} color={isDarkMode ? "white" : "black" } />
+              <Ionicons name="search" size={30} color={textColor} />
             </TouchableOpacity>
             <HeaderInput
               fontSize={18}
               // placeholder={"일기 찾기"}
-              placeholder={"키워드 입력"}
-              placeholderTextColor={isDarkMode ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)"}
+              placeholder={"키워드를 입력해 주세요."}
+              placeholderTextColor={placeholderTextColor}
               autoCapitalize="none"
               returnKeyType="search"
               onChangeText={text => setValue(text)}

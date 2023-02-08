@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { AppState, NativeEventSubscription } from "react-native";
-import useEditDiaryCheckAndNavigate from "./useEditDiaryCheckAndNavigate";
+import useEditDiaryAndBoardCheckAndNavigate from "./editDiaryAndBoardCheckAndNavigate";
 // import useVersionCheckAndCodePushWithEditDiaryCheckAndNavigate from "./useVersionCheckAndCodePushWithEditDiaryCheckAndNavigate";
 import versionCheckAndCodePush from "./versionCheckAndCodePush";
 
@@ -11,7 +11,7 @@ const useOnFirstOrBackground30MinuteThenVersionCheckAndCodePush = () => {
 
   // const versionCheckAndCodePush = useVersionCheckAndCodePushWithEditDiaryCheckAndNavigate(); // 추가. 확인
 
-  const editDiaryCheckAndNavigate = useEditDiaryCheckAndNavigate();
+  const editDiaryCheckAndNavigate = useEditDiaryAndBoardCheckAndNavigate();
   
   useEffect(() => {
 

@@ -150,12 +150,26 @@ export const cursorPaginationNeedDataFieldNameAndKeyArgsIfHave = (dataFieldName:
 
 
 // cursorPagination 쓰는 query 목록
-// SyncDiary 에서 getMyDiaryList 바꿔야해서 export 함.
-export const isFirstFetchMap: {[key:string]:boolean} = {
-  getMyDiaryList: true,
-  seeUserNotificationList: true,
-  searchMyDiaries: true,
-};
+// // SyncDiary 에서 getMyDiaryList 바꿔야해서 export 함.
+// export const isFirstFetchMap: {[key:string]:boolean} = {
+//   getMyDiaryList: true,
+//   seeUserNotificationList: true,
+//   searchMyDiaries: true, // 얘 keyArgs
+//   // board
+//   seeNewBoardList: true,
+//   searchBoards: true, // 얘 keyArgs
+//   seeBoardCommentOfComments: true, // 얘 keyArgs
+//   getMyBoardList: true,
+//   getUserPostList: true,
+//   seeBlockUsers: true,
+//   seeBoardLikes: true,
+//   seeBoardCommentLikes: true,
+//   seeBoardCommentOfCommentLikes: true,
+// };
+
+export const alreadyFetchedQuerySet = new Set();
+
+// search, CommentOfComments 같은거는 키워드 따라서 pagination 이 달라야 하는데
 
 // 이건 쓸일 없을 듯? 로그아웃 하면 캐시가 다 리셋되니까
 // export const setAllIsFirstFetchToTrue = () => {
@@ -163,6 +177,9 @@ export const isFirstFetchMap: {[key:string]:boolean} = {
 //     isFirstFetchMap[key] = true;
 //   }
 // };
+
+// 그리고 board 는 로그아웃/로그인 해도 유지되는게 좋긴 한데
+// read 에서 isNotFetchMore 넣어야 되서 하나로 합치는건 안될듯.
 
 type cursorPaginationPreventCacheDoubleType = (
   queryName: string,
@@ -178,12 +195,16 @@ export const cursorPaginationPreventCacheDouble: cursorPaginationPreventCacheDou
   return {
     // keyArgs 를 지정하면 얘를 기준으로 캐시 저장할 수 있음. keyArgs 가 다른 여러개로 나눠서 저장 가능. 나눌 필요 없는 애면 없고.
     ...(keyArgs && {keyArgs:[keyArgs]}),
-    merge(existing, incoming) {
-      if(isFirstFetchMap[queryName]) {
-        isFirstFetchMap[queryName] = false;
+    merge(existing, incoming, { args }) {
+      // if(isFirstFetchMap[queryName]) {
+      //   isFirstFetchMap[queryName] = false;
+      //   return incoming;
+      // }
+      const firstFetchSearchName = keyArgs ? queryName + "-" + args?.[keyArgs] : queryName;
+      if(!alreadyFetchedQuerySet.has(firstFetchSearchName)){
+        alreadyFetchedQuerySet.add(firstFetchSearchName);
         return incoming;
       }
-
       // // 추가. seeUserNotificationList 위해서
       // if(incoming.isNotFetchMore) {
       //   return incoming;
@@ -214,15 +235,20 @@ export const cursorPaginationPreventCacheDoubleWithIsNotFetchMore: cursorPaginat
   return {
     // keyArgs 를 지정하면 얘를 기준으로 캐시 저장할 수 있음. keyArgs 가 다른 여러개로 나눠서 저장 가능. 나눌 필요 없는 애면 없고.
     ...(keyArgs && {keyArgs:[keyArgs]}),
-    merge(existing, incoming) {
+    merge(existing, incoming, { args }) {
       // 추가. isNotFetchMore 로 들어오면 그대로.
       // 순서를 위로 놓음. 처음에 list 안받고 업로드 하면 쿼리 받은게 아니라
       if(incoming.isNotFetchMore) {
         return incoming;
       } // 여기까지
 
-      if(isFirstFetchMap[queryName]) {
-        isFirstFetchMap[queryName] = false;
+      // if(isFirstFetchMap[queryName]) {
+      //   isFirstFetchMap[queryName] = false;
+      //   return incoming;
+      // }
+      const firstFetchSearchName = keyArgs ? queryName + "-" + args?.[keyArgs] : queryName;
+      if(!alreadyFetchedQuerySet.has(firstFetchSearchName)){
+        alreadyFetchedQuerySet.add(firstFetchSearchName);
         return incoming;
       }
 
@@ -240,6 +266,87 @@ export const cursorPaginationPreventCacheDoubleWithIsNotFetchMore: cursorPaginat
         // return { ...existing };
         // isNotFetchMore 를 넣어줘야함. local only field 에도 넣고
         return { ...existing, isNotFetchMore: Boolean(existing.isNotFetchMore) };
+      }
+    },
+  }
+};
+
+
+type editedCursorPaginationWithIsNotFetchMoreType = (dataFieldName: string, keyArgs?: string) => FieldPolicy<any>
+
+// getMyBoardList 용. 근데 이걸로 해야할듯?
+export const editedCursorPaginationWithIsNotFetchMore: editedCursorPaginationWithIsNotFetchMoreType = (
+  dataFieldName,
+  keyArgs,
+) => {
+  return {
+    // keyArgs 를 지정하면 얘를 기준으로 캐시 저장할 수 있음. keyArgs 가 다른 여러개로 나눠서 저장 가능. 나눌 필요 없는 애면 없고.
+    ...(keyArgs && {keyArgs:[keyArgs]}),
+    merge(existing, incoming, { args }) {
+      // 추가. isNotFetchMore 로 들어오면 그대로.
+      // 순서를 위로 놓음. 처음에 list 안받고 업로드 하면 쿼리 받은게 아니라
+      if(incoming.isNotFetchMore) {
+        return incoming;
+      } // 여기까지
+
+      // const firstFetchSearchName = keyArgs ? queryName + "-" + args?.[keyArgs] : queryName;
+      // if(!alreadyFetchedQuerySet.has(firstFetchSearchName)){
+      //   alreadyFetchedQuerySet.add(firstFetchSearchName);
+      //   return incoming;
+      // }
+
+      // 무조건 type 형식이 맞아야함.... ㅅㅂ 안되서 개삽질했네. ...incomingRest 이걸로 맞춰라 바꿀꺼 빼고
+      if(!args.cursorId) {
+        return incoming;
+      } else {
+        const { [dataFieldName]:data, ...incomingRest } = incoming;
+        const mergedData = (existing && existing[dataFieldName]) ? [ ...existing[dataFieldName], ...data ] : [ ...data ];
+        return {
+          [dataFieldName]:mergedData,
+          ...incomingRest,
+        };
+      }
+    },
+
+    read(existing) {
+      if (existing) {
+        // return { ...existing };
+        // isNotFetchMore 를 넣어줘야함. local only field 에도 넣고
+        return { ...existing, isNotFetchMore: Boolean(existing.isNotFetchMore) };
+      }
+    },
+  }
+};
+
+// Search 용
+type cursorPaginationForSearchNeedDataFieldNameType = (
+  dataFieldName: string,
+) => FieldPolicy<any>
+
+export const cursorPaginationForSearchNeedDataFieldName: cursorPaginationForSearchNeedDataFieldNameType = (
+  dataFieldName,
+) => {
+  return {
+    // keyArgs 를 지정하면 얘를 기준으로 캐시 저장할 수 있음. keyArgs 가 다른 여러개로 나눠서 저장 가능. 나눌 필요 없는 애면 없고.
+    keyArgs:["keyword"],
+    merge(existing, incoming, { args: { cursorId }}) {
+
+      if(!cursorId) {
+        return incoming;
+      } else {
+        // 무조건 type 형식이 맞아야함.... ㅅㅂ 안되서 개삽질했네. ...incomingRest 이걸로 맞춰라 바꿀꺼 빼고
+        const { [dataFieldName]:data, ...incomingRest } = incoming;
+        const mergedData = (existing && existing[dataFieldName]) ? [ ...existing[dataFieldName], ...data ] : [ ...data ];
+        return {
+          [dataFieldName]:mergedData,
+          ...incomingRest,
+        };
+      }
+    },
+
+    read(existing) {
+      if (existing) {
+        return { ...existing };
       }
     },
   }

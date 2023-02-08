@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleProp, TextStyle } from "react-native";
+import { StyleProp, TextStyle, ViewStyle } from "react-native";
 import styled from "styled-components/native";
 import { FontAppliedBaseTextNeedFontSize } from "../../../styled-components/FontAppliedComponents";
 
@@ -8,6 +8,7 @@ type RenderCustomDayProps = {
   day: number,
   // dayParam: string,
   dayParam: number,
+  dotStyle: StyleProp<ViewStyle>,
 }
 
 const Container = styled.View`
@@ -19,21 +20,25 @@ const DotContainer = styled.View`
   justify-content: center;
 `;
 // <{key:number}> 는 안받아짐.
+// const Dot = styled.View<{index:number}>` 
+//   height: 5px;
+//   width: 5px;
+//   border-radius: 6px;
+//   background-color: tomato;
+//   margin-left: ${props=>props.index ? 1 : 0}px; 
+// `;
 const Dot = styled.View<{index:number}>` 
-  height: 5px;
-  width: 5px;
-  border-radius: 6px;
-  background-color: tomato;
   margin-left: ${props=>props.index ? 1 : 0}px; 
 `;
 
 const maxDotNumber = 3;
 
-const getMultiDot = (number:number) => {
+const getMultiDot = (number:number,dotStyle: StyleProp<ViewStyle>) => {
   const renderDotArr = [];
   number = number > maxDotNumber ? maxDotNumber : number;
   for(let i = 0; i<number; i++){
-    renderDotArr.push(<Dot key={i} index={i}/>)
+    // renderDotArr.push(<Dot key={i} index={i}/>)
+    renderDotArr.push(<Dot key={i} style={dotStyle} index={i}/>)
   }
   return renderDotArr;
 };
@@ -42,6 +47,7 @@ const RenderCustomDay = ({
   styleArray,
   day,
   dayParam,
+  dotStyle,
 }: RenderCustomDayProps) => {
 
   // const hasParams = Boolean(dayParam);
@@ -58,7 +64,7 @@ const RenderCustomDay = ({
         { day }
       </FontAppliedBaseTextNeedFontSize>
       <DotContainer>
-        {getMultiDot(dayParam)}
+        {getMultiDot(dayParam,dotStyle)}
       </DotContainer>
     </Container>
   // return hasParams ? 

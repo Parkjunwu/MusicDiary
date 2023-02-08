@@ -210,7 +210,8 @@ const CustomDrawerContent = ({
           <DivideLine/>
           <PressableItemNeedOnPressAndText
             onPress={()=>navigation.navigate("ChangeYoutubeSong",{
-              routeFrom:"MyDiaryNav",
+              // routeFrom:"MyDiaryNav",
+              routeFrom:"DrawerNav",
               diaryId,
             })}
             text="음악 변경하기"

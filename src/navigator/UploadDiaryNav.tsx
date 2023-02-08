@@ -25,6 +25,8 @@ import RequestSong from "../screens/mainNav/uploadDiary/RequsetSong";
 import { isAndroid } from "../utils";
 import EditDiaryForTemporaryDiaryData from "../screens/mainNav/uploadDiary/EditDiaryForTemporaryDiaryData";
 import LocalDBEditDiaryForTemporaryDiaryData from "../screens/useLocalDBScreen/LocalDBEditDiaryForTemporaryDiaryData";
+import NotificationDiaryDrawerNav from "./NotificationDiaryDrawerNav";
+import PushNotificationBoard from "../screens/rootNav/PushNotificationBoard";
 
 const Stack = createNativeStackNavigator<UploadDiaryTabStackParamsList>();
 
@@ -83,6 +85,7 @@ const UploadDiaryNav = ({isUsingCache,numberOfUnreadIfZeroIsNull}:UploadDiaryNav
           }
         </Stack.Screen>
 
+        {/* Notification 관련 화면 */}
         <Stack.Screen
           name={"Notification"}
           component={Notification} 
@@ -90,9 +93,23 @@ const UploadDiaryNav = ({isUsingCache,numberOfUnreadIfZeroIsNull}:UploadDiaryNav
             title:"알림"
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name={"NotificationDiary"}
           component={NotificationDiary}
+          options={{
+            title:""
+          }}
+        /> */}
+        <Stack.Screen
+          name={"NotificationDiaryDrawerNav"}
+          component={NotificationDiaryDrawerNav}
+          options={{
+            headerShown:false,
+          }}
+        />
+        <Stack.Screen
+          name={"NotificationBoard"}
+          component={PushNotificationBoard}
           options={{
             title:""
           }}

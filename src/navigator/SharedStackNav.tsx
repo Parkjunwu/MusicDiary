@@ -9,8 +9,6 @@ import LocalDBMyDiaryList from "../screens/useLocalDBScreen/LocalDBMyDiaryList";
 import MyDiaryList from "../screens/mainNav/myDiary/MyDiaryList";
 import RequestSongChange from "../screens/mainNav/myDiary/RequestSongChange";
 import SearchMyDiaries from "../screens/mainNav/myDiary/SearchMyDiaries";
-import Notification from "../screens/mainNav/notification/Notification";
-import NotificationDiary from "../screens/mainNav/notification/NotificationDiary";
 import DiaryPlusPhotoAndVideo from "../screens/mainNav/uploadDiary/DiaryPlusPhotoAndVideo";
 import DiarySelectPhotoAndVideo from "../screens/mainNav/uploadDiary/DiarySelectPhotoAndVideo";
 import FullScreenVideo from "../screens/mainNav/uploadDiary/FullScreenVideo";
@@ -76,25 +74,6 @@ const SharedStackNav: React.FC<ISharedStackNavProps> = ({screenName}) => {
               name={"Calendar"}
               component={isUsingCache ?  Calendar : LocalDBCalendar}
               options={{title:"캘린더"}}
-            />
-          </>
-        :
-          null
-      }
-      {
-        // screenName === "Profile"
-        screenName === "Notification"
-        ?
-          <>
-            <Stack.Screen
-              name={"Notification"}
-              component={Notification} 
-              options={{title:"알림"}}
-            />
-            <Stack.Screen
-              name={"NotificationDiary"}
-              component={NotificationDiary}
-              options={{title:""}}
             />
           </>
         :

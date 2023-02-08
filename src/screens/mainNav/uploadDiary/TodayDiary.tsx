@@ -6,6 +6,7 @@ import NotificationBtn from "../../../components/todayDiary/NotificationBtn";
 import WriteDiaryBtn from "../../../components/todayDiary/WriteDiaryBtn";
 import TodayDiaryListItem from "../../../components/todayDiary/TodayDiaryListItem";
 import SafeAreaContainer from "../../../components/upload/SafeAreaContainer";
+import useGetWidthDealWithBigScreenNeedImageHorizontalEmptySpaceBase20 from "../../../hooks/forDealWithBigScreen/useGetWidthDealWithBigScreenNeedImageHorizontalEmptySpaceBase20";
 
 const NoDiaryTopContainer = styled.View`
   flex-direction: row;
@@ -61,6 +62,11 @@ const TodayDiary = ({numberOfUnreadIfZeroIsNull}:TodayDiaryProps) => {
   // console.log("todayDiaries : " + JSON.stringify(todayDiaries))
   const isTodayDiaries = todayDiaries && todayDiaries.length !== 0;
 
+  const diaryImageMarginHorizontal = 6;
+  const diaryImagePaddingHorizontal = 20;
+  const spaceHorizontal = diaryImageMarginHorizontal*2 + diaryImagePaddingHorizontal*2;
+  const {layoutWidth,imageWidth} = useGetWidthDealWithBigScreenNeedImageHorizontalEmptySpaceBase20(spaceHorizontal);
+
   return(
     <SafeAreaContainer>
       <BaseContainer>
@@ -77,7 +83,13 @@ const TodayDiary = ({numberOfUnreadIfZeroIsNull}:TodayDiaryProps) => {
             </TopContainer>
             <TodayDiaryFlatList
               data={todayDiaries}
-              renderItem={({item})=><TodayDiaryListItem item={item}/>}
+              renderItem={({item})=><TodayDiaryListItem
+                item={item}
+                imageWidth={imageWidth}
+                imageMarginHorizontal={diaryImageMarginHorizontal}
+                imagePaddingHorizontal={diaryImagePaddingHorizontal}
+                maxWidth={layoutWidth}
+              />}
               keyExtractor={(item)=>item?.id + ""}
             />
             <WriteDiaryBtn

@@ -173,8 +173,8 @@ android {
         applicationId "com.jwpark.musicdiary"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 30
-        versionName "1.14.0"
+        versionCode 32
+        versionName "2.0.0"
         vectorDrawables.useSupportLibrary = true
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 

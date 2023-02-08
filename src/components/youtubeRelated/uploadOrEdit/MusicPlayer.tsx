@@ -1,10 +1,10 @@
 import { useCallback, useState } from "react";
-// import YoutubePlayer from "react-native-youtube-iframe";
 import styled from "styled-components/native";
 import useBackgroundColorAndTextColor from "../../../hooks/useBackgroundColorAndTextColor";
 import { FontAppliedBaseTextNeedFontSize } from "../../../styled-components/FontAppliedComponents";
 import Ionicons from "react-native-vector-icons/Ionicons"
 import BaseYoutubePlayer from "../BaseYoutubePlayer";
+import useGetYoutubePlayerHeight from "../../../hooks/useGetYoutubePlayerHeight";
 
 const Container = styled.View`
   margin-top: 3px;
@@ -51,11 +51,13 @@ const MusicPlayer = ({
   const onPressPlayState = () => setPlay(prev=>!prev);
   const onPressScreenState = () => setYoutubeMusicShow(prev=>!prev);
 
+  const youtubePlayerHeight = useGetYoutubePlayerHeight();
+
   return (
     <Container>
       {/* <YoutubePlayer */}
       <BaseYoutubePlayer
-        height={youtubeMusicShow ? 225 : 0}
+        height={youtubeMusicShow ? youtubePlayerHeight : 0}
         play={play}
         videoId={youtubeId}
         onChangeState={onStateChange}

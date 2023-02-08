@@ -11,6 +11,7 @@ import DiaryMiniMusicSwitchBtn from "./DiaryMiniMusicSwitchBtn";
 import { FontAppliedBaseTextNeedFontSize } from "../../styled-components/FontAppliedComponents";
 import { isAndroid } from "../../utils";
 import BaseYoutubePlayer from "../youtubeRelated/BaseYoutubePlayer";
+import useGetYoutubePlayerHeight from "../../hooks/useGetYoutubePlayerHeight";
 
 const Container = styled.View`
 
@@ -122,6 +123,8 @@ const DiaryStickyHeaderComponent = ({
 
   // const onPressPlayerShowOrHide = () => setPlayerShow(prev=>!prev);
 
+  const youtubePlayerHeight = useGetYoutubePlayerHeight();
+
   return (
     <Container>
       <DateContainer>
@@ -145,7 +148,8 @@ const DiaryStickyHeaderComponent = ({
             {/* <YoutubePlayer */}
             <BaseYoutubePlayer
               // ref={youtubeRef}
-              height={youtubeMusicShow ? 225 : 0}
+              // height={youtubeMusicShow ? 225 : 0}
+              height={youtubeMusicShow ? youtubePlayerHeight : 0}
               play={isNowMusicPlaying}
               videoId={youtubeId}
               onChangeState={onStateChange}

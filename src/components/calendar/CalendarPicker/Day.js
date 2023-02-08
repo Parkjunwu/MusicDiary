@@ -172,6 +172,7 @@ const Day = (props) => {
               styleArray={[styles.dayLabel, textStyle, custom.textStyle, selectedDayTextStyle]}
               day={day}
               dayParam={dayParam}
+              dotStyle={styles.dot}
             />
           </TouchableOpacity>
         </View>

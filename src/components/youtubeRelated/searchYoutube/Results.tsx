@@ -11,6 +11,7 @@ import getUnknownErrorThenAlert from "../../../logic/getUnknownErrorThenAlert";
 import { FontAppliedBaseTextNeedFontSize } from "../../../styled-components/FontAppliedComponents";
 import styled from "styled-components/native";
 import useBackgroundColorAndTextColor from "../../../hooks/useBackgroundColorAndTextColor";
+import useGetYoutubePlayerHeight from "../../../hooks/useGetYoutubePlayerHeight";
 
 const SelectText = styled(FontAppliedBaseTextNeedFontSize)<{youtubeId:string|undefined}>`
   opacity: ${props=>props.youtubeId ? 1 : 0.5};
@@ -106,6 +107,9 @@ const Results = ({
     
   const { backgroundColor } = useBackgroundColorAndTextColor();
 
+  const paddingHorizontal = 10;
+  const thumbNailHeight = useGetYoutubePlayerHeight(paddingHorizontal*2);
+
   return (
     // <View style={styles.container}>
       <FlatList
@@ -132,6 +136,8 @@ const Results = ({
               // setSelectedIndex={setSelectedIndex}
               // diaryId={diaryId}
               backgroundColor={backgroundColor}
+              paddingHorizontal={paddingHorizontal}
+              thumbNailHeight={thumbNailHeight}
             />
           )
         }}

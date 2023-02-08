@@ -45,10 +45,10 @@ export const NOTIFICATION_FRAGMENT = gql`
     # read
     createdAt
     diaryId
-    # commentId
-    # commentOfCommentId
+    boardId
+    commentId
+    commentOfCommentId
     # userId
-    # postId
     # petLogId
   }
 `;

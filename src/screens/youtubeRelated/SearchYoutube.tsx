@@ -1,12 +1,15 @@
 import { useRef, useState } from "react";
-import BaseContainer from "../../components/shared/BaseContainer";
-import Results_MyDiaryNav from "../../components/youtubeRelated/searchYoutube/Results_MyDiaryNav";
+// import BaseContainer from "../../components/shared/BaseContainer";
+import UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth from "../../components/upload/UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth";
+import Results_DrawerNav from "../../components/youtubeRelated/searchYoutube/Results_DrawerNav";
 import Results_UploadAndEditDiary from "../../components/youtubeRelated/searchYoutube/Results_UploadAndEditDiary";
 import SearchBar from "../../components/youtubeRelated/searchYoutube/SearchBar";
 
-const SearchYoutube = ({route:{params:{routeFrom,diaryId}}}:{route:{params:{routeFrom:"UploadDiary" | "EditDiary" | "MyDiaryNav" | "EditDiaryForTemporaryDiaryData",diaryId?:number}}}) => {
+// const SearchYoutube = ({route:{params:{routeFrom,diaryId}}}:{route:{params:{routeFrom:"UploadDiary" | "EditDiary" | "MyDiaryNav" | "EditDiaryForTemporaryDiaryData",diaryId?:number}}}) => {
+const SearchYoutube = ({route:{params:{routeFrom,diaryId}}}:{route:{params:{routeFrom:"UploadDiary" | "EditDiary" | "DrawerNav" | "EditDiaryForTemporaryDiaryData",diaryId?:number}}}) => {
 
-  const routeFromMyDiaryNav = routeFrom === "MyDiaryNav";
+  // const routeFromMyDiaryNav = routeFrom === "MyDiaryNav";
+  const routeFromDrawerNav = routeFrom === "DrawerNav";
 
   const [nowSearchingKeyword,setNowSearchingKeyword] = useState<string>("");
 
@@ -15,7 +18,8 @@ const SearchYoutube = ({route:{params:{routeFrom,diaryId}}}:{route:{params:{rout
   const pageToken = useRef("");
 
   return (
-    <BaseContainer>
+    // <BaseContainer>
+    <UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
       <SearchBar
         setSearchData={setSearchData}
         setNowSearchingKeyword={setNowSearchingKeyword}
@@ -28,8 +32,10 @@ const SearchYoutube = ({route:{params:{routeFrom,diaryId}}}:{route:{params:{rout
         pageToken={pageToken}
       /> */}
       {
-        routeFromMyDiaryNav ?
-          <Results_MyDiaryNav
+        // routeFromMyDiaryNav ?
+        routeFromDrawerNav ?
+          // <Results_MyDiaryNav
+          <Results_DrawerNav
             searchData={searchData}
             setSearchData={setSearchData}
             nowSearchingKeyword={nowSearchingKeyword}
@@ -46,7 +52,8 @@ const SearchYoutube = ({route:{params:{routeFrom,diaryId}}}:{route:{params:{rout
           />
           
       }
-    </BaseContainer>
+    {/* </BaseContainer> */}
+    </UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
   );
 };
 

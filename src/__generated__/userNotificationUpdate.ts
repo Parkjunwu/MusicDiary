@@ -14,6 +14,9 @@ export interface userNotificationUpdate_userNotificationUpdate {
   which: string;
   createdAt: string;
   diaryId: number | null;
+  boardId: number | null;
+  commentId: number | null;
+  commentOfCommentId: number | null;
 }
 
 export interface userNotificationUpdate {

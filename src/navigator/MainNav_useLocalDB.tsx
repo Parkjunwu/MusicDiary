@@ -1,19 +1,23 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useColorScheme } from "react-native";
+import { Text } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import TabIcon from "../components/mainNav/TabIcon";
 import ForResetSharedNavScreen from "../components/sharedStackNav/ForResetSharedNavScreen";
 import SharedStackNav from "./SharedStackNav";
 import { MainNavTabParamsList } from "../types/navigation/homeNavStackParamsList";
 import UploadDiaryNav from "./UploadDiaryNav";
 import LocalDBProfileNav from "./useLocalDBNav/LocalDBProfileNav";
+import BoardNavForNotLogInUser from "./BoardNavForNotLogInUser";
+import useIsDarkMode from "../hooks/useIsDarkMode";
+
 
 const Tab = createBottomTabNavigator<MainNavTabParamsList>();
 
 const MainNav_useLocalDB = () => {
 
-  const darkModeSubscription = useColorScheme();
+  const isDarkMode = useIsDarkMode();
 
   // Upload, List, Notification, Me
   return (
@@ -21,14 +25,27 @@ const MainNav_useLocalDB = () => {
       screenOptions={{
         headerShown:false,
         tabBarStyle:{
-          backgroundColor: darkModeSubscription === "light" ? "white" : "black",
-          borderTopColor: darkModeSubscription === "light" ? "rgba(0,0,0,0.5)":"rgba(255,255,255,0.5)",
+          backgroundColor: isDarkMode ? "black" : "white",
+          borderTopColor: isDarkMode ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)",
         },
-        tabBarActiveTintColor: darkModeSubscription === "light" ? "rgba(0,0,0,0.7)" : "white",
+        tabBarActiveTintColor: isDarkMode ? "white" : "rgba(0,0,0,0.7)",
         tabBarShowLabel:false,
       }}
       initialRouteName="UploadDiaryTab"
     >
+
+      <Tab.Screen
+        name="UploadDiaryTab"
+        options={{
+          tabBarIcon:({focused, color})=>
+          <Feather name="edit-3" size={24} color={color} />
+          // <Text style={{fontSize:11,fontWeight:"900",color}}>TODAY</Text>
+        }}
+        >
+        {()=><UploadDiaryNav
+          isUsingCache={false}
+        />}
+      </Tab.Screen>
 
       <Tab.Screen
         name="MyDiaryListTab"
@@ -45,16 +62,14 @@ const MainNav_useLocalDB = () => {
       </Tab.Screen>
 
       <Tab.Screen
-        name="UploadDiaryTab"
+        name="BoardTab"
+        component={BoardNavForNotLogInUser} // 아직 안함
         options={{
-          tabBarIcon:({focused, color})=>
-          <Feather name="edit-3" size={24} color={color} />
+          tabBarIcon:({focused,color})=>
+          <MaterialCommunityIcons name={focused ? "clipboard-text" : "clipboard-text-outline"} size={24} color={color} />
         }}
-        >
-        {()=><UploadDiaryNav
-          isUsingCache={false}
-        />}
-      </Tab.Screen>
+      />
+
       <Tab.Screen
         name="ProfileListTab"
         component={LocalDBProfileNav}

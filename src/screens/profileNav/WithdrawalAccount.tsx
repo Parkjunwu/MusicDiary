@@ -8,6 +8,7 @@ import useIsDarkMode from "../../hooks/useIsDarkMode";
 import { moveDeleteAccountComplete } from "../../apollo";
 import { deleteAccount } from "../../__generated__/deleteAccount";
 import ScrollViewWithoutBounce from "../../components/shared/ScrollViewWithoutBounce";
+import UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth from "../../components/upload/UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth";
 
 const DELETE_ACCOUNT = gql`
   mutation deleteAccount {
@@ -19,7 +20,7 @@ const DELETE_ACCOUNT = gql`
 
 const Container = styled.View`
   flex: 1;
-  background-color: ${props=>props.theme.backgroundColor};
+  /* background-color: ${props=>props.theme.backgroundColor}; */
   padding: 40px 20px;
 `;
 const TitleText = styled.Text`
@@ -127,7 +128,7 @@ const WithdrawalAccount = () => {
     
   };
 
-  return (
+  return (<UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
     <ScrollViewWithoutBounce>
       <Container>
         <TitleText>회원 탈퇴 시 주의사항</TitleText>
@@ -145,6 +146,7 @@ const WithdrawalAccount = () => {
         </WithDrawalBtn>
       </Container>
     </ScrollViewWithoutBounce>
+    </UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
   );
 };
 

@@ -1,4 +1,3 @@
-import { TouchableOpacity } from "react-native";
 import FastImage from "react-native-fast-image";
 import styled from "styled-components/native";
 import { colors } from "../../../js-assets/color";
@@ -45,16 +44,25 @@ const BtnContainer = styled.View`
   align-items: center;
   margin-top: 20px;
 `;
-const Btn = styled.TouchableOpacity`
+const AccentBtn = styled.TouchableOpacity`
   padding: 3px 0px;
   width: 60%;
   background-color: ${colors.blue};
   border-radius: 3px;
+  margin-bottom: 7px;
 `;
-const BtnText = styled(FontAppliedBoldTextNeedFontSize)`
+const AccentBtnText = styled(FontAppliedBoldTextNeedFontSize)`
   text-align: center;
   color: white;
   /* font-weight: 700; */
+`;
+const NotImportantBtn = styled.TouchableOpacity`
+  padding: 1px 0px;
+  width: 60%;
+  margin-top: 1px;
+`;
+const NotImportantBtnText = styled(FontAppliedBaseTextNeedFontSize)`
+  text-align: center;
 `;
 
 type BaseAboutAccountType = {
@@ -65,6 +73,7 @@ type BaseAboutAccountType = {
   avoidImagePaddingTop: number;
   onPressEditProfile: () => void;
   onPressGoWithDrawal: () => void;
+  onPressSeeBlockUsers: () => void;
   backgroundColor?: string
 };
 
@@ -76,6 +85,7 @@ const BaseAboutAccount = ({
   avoidImagePaddingTop,
   onPressEditProfile,
   onPressGoWithDrawal,
+  onPressSeeBlockUsers,
   backgroundColor,
 }: BaseAboutAccountType) => {
 
@@ -99,23 +109,28 @@ const BaseAboutAccount = ({
             borderRadius: imageSize,
           }}
           source={{
-            uri: meData?.me.avatar ? meData.me.avatar : noUserUri
+            uri: meData?.me?.avatar ? meData.me.avatar : noUserUri
           }}
         />
       </ImageContainer>
       <MainContainer
         paddingTop={avoidImagePaddingTop}
       >
-        <UserName fontSize={16}>{meData?.me.userName} 님</UserName>
+        <UserName fontSize={16}>{meData?.me?.userName} 님</UserName>
         <BtnContainer>
-          <Btn onPress={onPressEditProfile}>
-            <BtnText>프로필 편집</BtnText>
-          </Btn>
-          <TouchableOpacity onPress={onPressGoWithDrawal}>
-            <FontAppliedBaseTextNeedFontSize>
+          <AccentBtn onPress={onPressEditProfile}>
+            <AccentBtnText>프로필 편집</AccentBtnText>
+          </AccentBtn>
+          <NotImportantBtn onPress={onPressSeeBlockUsers}>
+            <NotImportantBtnText>
+              차단한 유저 보기
+            </NotImportantBtnText>
+          </NotImportantBtn>
+          <NotImportantBtn onPress={onPressGoWithDrawal}>
+            <NotImportantBtnText>
               회원 탈퇴
-            </FontAppliedBaseTextNeedFontSize>
-          </TouchableOpacity>
+            </NotImportantBtnText>
+          </NotImportantBtn>
         </BtnContainer>
       </MainContainer>
     </Container>

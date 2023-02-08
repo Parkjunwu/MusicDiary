@@ -11,6 +11,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { gql, useMutation } from "@apollo/client";
 import { requestEmailToAdmin, requestEmailToAdminVariables } from "../../__generated__/requestEmailToAdmin";
 import { isAndroid } from "../../utils";
+import UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth from "../../components/upload/UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth";
 
 const REQUSET_EMAIL_TO_ADMIN = gql`
   mutation requestEmailToAdmin(
@@ -26,7 +27,7 @@ const REQUSET_EMAIL_TO_ADMIN = gql`
 `;
 
 const Container = styled.View`
-  background-color: ${props=>props.theme.backgroundColor};
+  /* background-color: ${props=>props.theme.backgroundColor}; */
   flex: 1;
   padding: 20px 10px;
 `;
@@ -139,6 +140,7 @@ const RequestEmailToAdministrator = ({navigation}:RequestProp) => {
   }, [isWriteSomething]);
 
   return (
+    <UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
     <Container>
       <KeyboardAwareScrollView>
           <Title fontSize={17}>버그, 앱 작동 문제, 추가했으면 하는 기능, 이 앱의 장점, 단점, 보완할 점, 부족한 점 등 무엇이든 저희에게 보내주시면 감사한 마음으로 받겠습니다.</Title>
@@ -164,6 +166,7 @@ const RequestEmailToAdministrator = ({navigation}:RequestProp) => {
           </SubmitContainer>
         </KeyboardAwareScrollView>
     </Container>
+    </UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
   );
 };
 

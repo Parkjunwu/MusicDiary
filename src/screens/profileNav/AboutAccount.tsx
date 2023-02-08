@@ -78,9 +78,9 @@ const AboutAccount = () => {
 
   const onPressGoWithDrawal = ()=> navigation.navigate("WithdrawalAccount");
 
-  const onPressEditProfile = () => {
-    navigation.navigate("EditProfile");
-  };
+  const onPressEditProfile = () => navigation.navigate("EditProfile");
+  
+  const onPressSeeBlockUsers = () => navigation.navigate("SeeBlockUsers");
 
   const imageSize = 100;
   const imageContainerWidth = 130;
@@ -103,6 +103,7 @@ const AboutAccount = () => {
         avoidImagePaddingTop={avoidImagePaddingTop}
         onPressEditProfile={onPressEditProfile}
         onPressGoWithDrawal={onPressGoWithDrawal}
+        onPressSeeBlockUsers={onPressSeeBlockUsers}
         backgroundColor={backgroundColor}
       />
       :
@@ -112,14 +113,15 @@ const AboutAccount = () => {
         }}
       >
         <BaseAboutAccount
-        imageContainerWidth={imageContainerWidth}
-        left={left}
-        imageSize={imageSize}
-        meData={meData}
-        avoidImagePaddingTop={avoidImagePaddingTop}
-        onPressEditProfile={onPressEditProfile}
-        onPressGoWithDrawal={onPressGoWithDrawal}
-      />
+          imageContainerWidth={imageContainerWidth}
+          left={left}
+          imageSize={imageSize}
+          meData={meData}
+          avoidImagePaddingTop={avoidImagePaddingTop}
+          onPressEditProfile={onPressEditProfile}
+          onPressGoWithDrawal={onPressGoWithDrawal}
+          onPressSeeBlockUsers={onPressSeeBlockUsers}
+        />
       </ScrollViewWithoutBounce>
   //   <ScrollViewWithoutBounce
   //     style={{

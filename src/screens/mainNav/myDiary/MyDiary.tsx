@@ -229,12 +229,10 @@
   // 유튜브 사용시
 
 import { FlatList, ListRenderItem, TouchableOpacity } from "react-native";
-import { useWindowDimensions } from 'react-native';
 import { gql, useQuery } from "@apollo/client";
 import React, { useEffect, useRef, useState } from "react";
 // import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import useIsDarkMode from "../../../hooks/useIsDarkMode";
 import DiaryLoading from "../../../components/myDiary/DiaryLoading";
 import BodyText from "../../../components/myDiary/BodyText";
 import DiaryVideoOrImage from "../../../components/myDiary/DiaryVideoOrImage";
@@ -251,6 +249,9 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { DIARY_FRAGMENT } from "../../../gql/fragment";
 import DiaryStickyHeaderComponent from "../../../components/myDiary/DiaryStickyHeaderComponent";
 import { CompositeScreenProps } from "@react-navigation/core";
+import useGetWidthDealWithBigScreenNeedImageHorizontalEmptySpaceBase20 from "../../../hooks/forDealWithBigScreen/useGetWidthDealWithBigScreenNeedImageHorizontalEmptySpaceBase20";
+import useColorsChangedByDarkMode from "../../../hooks/useColorsChangedByDarkMode";
+import UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth from "../../../components/upload/UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth";
 
 const SEE_MY_DIARY = gql`
   query seeMyDiary($id: Int!) {
@@ -423,9 +424,9 @@ const MyDiary = ({
   },[data,loading]);
   
   
-  const { width:windowWidth } = useWindowDimensions();
+  const {backgroundColor} = useColorsChangedByDarkMode();
 
-  const isDarkMode = useIsDarkMode();
+  const {imageWidth} = useGetWidthDealWithBigScreenNeedImageHorizontalEmptySpaceBase20();
 
   if(loading) {
     return <DiaryLoading {...route.params} />;
@@ -439,7 +440,7 @@ const MyDiary = ({
   const renderItem:ListRenderItem<{body?:string,file?:string}> = ({item,index}) => {
     const file = item.file;
     const body = item.body;
-    const fileWidth = windowWidth - 20;
+    // const fileWidth = windowWidth - 20;
     return (
       <React.Fragment
         key={index}
@@ -450,7 +451,7 @@ const MyDiary = ({
         >{body}</BodyText>}
         {file && <DiaryVideoOrImage
           uri={file}
-          fileWidth={fileWidth}
+          fileWidth={imageWidth}
           isNowMusicPlaying={isNowMusicPlaying}
           setIsNowMusicPlaying={setIsNowMusicPlaying}
           videoPlayingState={videoPlayingState}
@@ -464,10 +465,11 @@ const MyDiary = ({
   // 여기는 KeyboardAwareFlatList 쓸 필요 없지 않나?
   return (
     // <KeyboardAwareFlatList
+    <UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
     <FlatList
       style={{
         flex: 1,
-        backgroundColor: isDarkMode ? "black" : "white",
+        backgroundColor,
         padding: 10,
         paddingTop: 0,
       }}
@@ -496,6 +498,7 @@ const MyDiary = ({
           switchYoutubeMusicShow={switchYoutubeMusicShow}
         />}
     />
+    </UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
   );
 };
 

@@ -4,11 +4,13 @@ import momentSeoulTZ from "../../logic/momentSeoul/momentSeoulTZ";
 import { useCallback, useEffect, useState } from "react";
 // import YoutubeIframe from "react-native-youtube-iframe";
 import styled from "styled-components/native";
-import BaseContainer from "../../components/shared/BaseContainer";
+// import BaseContainer from "../../components/shared/BaseContainer";
 import { UploadDiaryTabStackParamsList } from "../../types/navigation/homeNavStackParamsList";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { FontAppliedBaseTextNeedFontSize, FontAppliedBoldTextNeedFontSize } from "../../styled-components/FontAppliedComponents";
 import BaseYoutubePlayer from "../../components/youtubeRelated/BaseYoutubePlayer";
+import useGetYoutubePlayerHeight from "../../hooks/useGetYoutubePlayerHeight";
+import UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth from "../../components/upload/UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth";
 
 const Wrapper = styled.View`
   /* flex: 2; */
@@ -130,11 +132,15 @@ const WatchYoutube = ({navigation,route}:WatchYoutubeProps) => {
 
   const convertedPublished = momentSeoulTZ(published).fromNow();
 
+  const youtubePlayerHeight = useGetYoutubePlayerHeight();
+
   return (
-    <BaseContainer>
+    // <BaseContainer>
+    <UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
       {/* <YoutubeIframe */}
       <BaseYoutubePlayer
-        height={240}
+        // height={240}
+        height={youtubePlayerHeight+20}
         videoId={vId}
         play={play}
         onChangeState={onChangeState}
@@ -153,7 +159,8 @@ const WatchYoutube = ({navigation,route}:WatchYoutubeProps) => {
           </Channel>}
         </Details>
       </Wrapper>
-    </BaseContainer>
+    {/* </BaseContainer> */}
+    </UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
   )
 };
 

@@ -5,7 +5,7 @@ import styled from "styled-components/native";
 import { seeUserNotificationList_seeUserNotificationList_notification } from "../../__generated__/seeUserNotificationList";
 import getNotificationMessage from "../../logic/notification/getNotificationMessage";
 import getPassedTime from "../../logic/getPassedTime";
-import { NotificationTabStackParamsList } from "../../types/navigation/homeNavStackParamsList";
+import { NotificationList } from "../../types/navigation/homeNavStackParamsList";
 import { FontAppliedBaseTextNeedFontSize } from "../../styled-components/FontAppliedComponents";
 import { remoteNotificationChannelList } from "../../pushNotification/constants";
 
@@ -50,7 +50,7 @@ const PublishTime = styled(FontAppliedBaseTextNeedFontSize)`
   
 `;
 
-type Props = NativeStackScreenProps<NotificationTabStackParamsList, 'Notification'>;
+type Props = NativeStackScreenProps<NotificationList, 'Notification'>;
 
 const NotificationLayout = (data:seeUserNotificationList_seeUserNotificationList_notification,navigation:Props['navigation']) => {
 
@@ -86,25 +86,26 @@ const NotificationLayout = (data:seeUserNotificationList_seeUserNotificationList
       //   break;
 
       
-      // case "FOLLOWING_WRITE_PETLOG":
-      // case "MY_PETLOG_GET_LIKE":
-      // case "MY_PETLOG_GET_COMMENT":
-      // case "MY_PETLOG_COMMENT_GET_LIKE":
-      // case "MY_PETLOG_COMMENT_GET_COMMENT":
-      // case "MY_PETLOG_COMMENT_OF_COMMENT_GET_LIKE":
-      //   navigation.navigate("NotificationPetLog",{
-      //     petLogId:Number(data.petLogId),
-      //     // 아마 commentId 랑 commentOfCommentId 로 받을듯. petLogcommentId 로 받으면 변경
-      //     ...(data.commentId && {commentId: Number(data.commentId)}),
-      //     ...(data.commentOfCommentId && {commentOfCommentId: Number(data.commentOfCommentId)})
-      //   });
-      //   break;
+      case "FOLLOWING_WRITE_BOARD":
+      case "MY_BOARD_GET_LIKE":
+      case "MY_BOARD_GET_COMMENT":
+      case "MY_BOARD_COMMENT_GET_LIKE":
+      case "MY_BOARD_COMMENT_GET_COMMENT":
+      case "MY_BOARD_COMMENT_OF_COMMENT_GET_LIKE":
+        navigation.navigate("NotificationBoard",{
+          boardId:Number(data.boardId),
+          // 아마 commentId 랑 commentOfCommentId 로 받을듯. boardcommentId 로 받으면 변경
+          ...(data.commentId && {commentId: Number(data.commentId)}),
+          ...(data.commentOfCommentId && {commentOfCommentId: Number(data.commentOfCommentId)})
+        });
+        break;
 
       // case  "MUSIC_CHANGED":
       // case  "MUSIC_SELECTED":
-      case  remoteNotificationChannelList.MUSIC_CHANGED:
-      case  remoteNotificationChannelList.MUSIC_SELECTED:
-        navigation.navigate("NotificationDiary",{
+      case remoteNotificationChannelList.MUSIC_CHANGED:
+      case remoteNotificationChannelList.MUSIC_SELECTED:
+        // navigation.navigate("NotificationDiary",{
+        navigation.navigate("NotificationDiaryDrawerNav",{
           id:Number(data.diaryId),
         })
         break;

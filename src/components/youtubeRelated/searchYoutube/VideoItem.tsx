@@ -69,6 +69,8 @@ type VideoItemProps = {
   // diaryId?: number,
   // 없으면 누를때 까맣게됨
   backgroundColor: string,
+  paddingHorizontal: number
+  thumbNailHeight: number
 };
 
 const VideoItem = ({
@@ -83,6 +85,8 @@ const VideoItem = ({
   youtubeTitle,
   // diaryId,
   backgroundColor,
+  paddingHorizontal,
+  thumbNailHeight,
 }:VideoItemProps) => {
 
   const convertedPublished = momentSeoulTZ(published).fromNow();
@@ -160,7 +164,8 @@ const VideoItem = ({
         > */}
         <View
           style={{
-            paddingHorizontal: 10,
+            // paddingHorizontal: 10,
+            paddingHorizontal,
             paddingVertical: 20,
             flex: 2,
             borderBottomColor: "rgba(200,200,200,0.4)",
@@ -172,7 +177,8 @@ const VideoItem = ({
           <TouchableOpacity onPress={onPressImage}>
             <FastImage
               style={{
-                height: 200,
+                // height: 200,
+                height: thumbNailHeight,
                 flex: 1,
                 // backgroundColor:'#666666',
               }}

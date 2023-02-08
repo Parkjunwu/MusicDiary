@@ -1,5 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components/native";
+// import useGetYoutubePlayerHeight from "../../../hooks/useGetYoutubePlayerHeight";
+import useGetYoutubePlayerHeightWithoutMaxWidth from "../../../hooks/useGetYoutubePlayerHeightWithoutMaxWidth";
 import { FontAppliedBaseTextNeedFontSize } from "../../../styled-components/FontAppliedComponents";
 import YoutubeComponent from "../../youtubeRelated/YoutubeComponent";
 
@@ -34,6 +36,9 @@ const YoutubeWithCloseBtn = ({
     setPlay(false);
   };
 
+  // const youtubePlayerHeight = useGetYoutubePlayerHeight(20);
+  const youtubePlayerHeight = useGetYoutubePlayerHeightWithoutMaxWidth(20);
+
   return(
     <Container
       display={youtubeShow}
@@ -43,7 +48,8 @@ const YoutubeWithCloseBtn = ({
         setPlay={setPlay}
         videoId={videoId}
         // videoHeight={youtubeShow ? 210 : 0}
-        videoHeight={210}
+        // videoHeight={210}
+        videoHeight={youtubePlayerHeight}
       />
       <CloseBtn onPress={onPressClose}>
         <CloseBtnText>[닫기]</CloseBtnText>

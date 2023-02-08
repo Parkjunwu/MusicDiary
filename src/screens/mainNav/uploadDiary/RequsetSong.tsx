@@ -9,6 +9,7 @@ import { FontAppliedBaseTextNeedFontSize, FontAppliedBaseTextInputNeedFontSize, 
 import { UploadDiaryTabStackParamsList } from "../../../types/navigation/homeNavStackParamsList";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import useRequestComplete from "../../../hooks/uploadDiary/useRequestComplete";
+import UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth from "../../../components/upload/UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth";
 
 const RequestBtn = styled.TouchableOpacity`
 
@@ -133,7 +134,8 @@ const RequestSong = ({navigation,route}:RequestSongProps) => {
   const isDarkMode = useIsDarkMode();
 
   return (
-    <BaseContainer>
+    // <BaseContainer>
+    <UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
       <Title fontSize={19}>요청 사항</Title>
       <RequestInput
         placeholder="요청 사항이 있으시다면 100자 이내로 작성해 주세요."
@@ -168,7 +170,8 @@ const RequestSong = ({navigation,route}:RequestSongProps) => {
           <SubmitText fontSize={15}>추천 없이 업로드</SubmitText>
         </SubmitBtn>
       </BtnRowView>
-    </BaseContainer>
+    </UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
+    // </BaseContainer>
   );
 };
 

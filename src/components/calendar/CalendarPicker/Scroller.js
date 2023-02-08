@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import { RecyclerListView, DataProvider, LayoutProvider } from 'recyclerlistview';
 // import moment from 'moment';
 import momentSeoulTZ from '../../../logic/momentSeoul/momentSeoulTZ';
+import { isAndroid } from '../../../utils';
 
 export default class CalendarScroller extends Component {
   static propTypes = {
@@ -127,14 +128,18 @@ export default class CalendarScroller extends Component {
     if (currentIndex === 0) {
       return;
     }
-    const newIndex = Math.max(currentIndex - numVisibleItems, 0);
+    // const newIndex = Math.max(currentIndex - numVisibleItems, 0);
+    let newIndex = Math.max(currentIndex - numVisibleItems, 0);
+    isAndroid && (newIndex -= 1); // 이유는 모르겠는데 안드로이드는 하나 내려야 맞음
     this.rlv && this.rlv.scrollToIndex(newIndex, true);
   }
 
   // Scroll right, guarding against end index.
   scrollRight = () => {
     const { currentIndex, numVisibleItems, numMonths } = this.state;
-    const newIndex = Math.min(currentIndex + numVisibleItems, numMonths - 1);
+    // const newIndex = Math.min(currentIndex + numVisibleItems, numMonths - 1);
+    let newIndex = Math.min(currentIndex + numVisibleItems, numMonths - 1);
+    isAndroid && (newIndex += 1); // 이유는 모르겠는데 안드로이드는 하나 올려야 맞음
     this.rlv && this.rlv.scrollToIndex(newIndex, true);
   }
 
@@ -200,8 +205,8 @@ export default class CalendarScroller extends Component {
     });
   }
 
-  // Track which dates are visible.
-  onVisibleIndicesChanged = (all, now) => {
+  // 따로 뺌
+  setCurrentMonth = (currentIndex) => {
     const {
       data,
       numMonths,
@@ -213,9 +218,6 @@ export default class CalendarScroller extends Component {
       onMonthChange,
     } = this.props;
 
-    // "now" contains the inflight indices, whereas "all" reflects indices
-    // after scrolling has settled. Prioritize "now" for faster header updates.
-    const currentIndex = now[0] || all[0];
     const currentMonth = data[currentIndex]; // a Moment date
 
     // Fire month/year update on month changes.  This is
@@ -236,6 +238,68 @@ export default class CalendarScroller extends Component {
       currentMonth,
       currentIndex,
     });
+  }
+
+  // 안드로이드 안되서 넣은거
+  onScroll = (rawEvent) => {
+    // console.log("onScroll")
+    // if(!isAndroid) return; // props 에 넣음
+    // console.log(rawEvent.nativeEvent.contentSize.width)        // 12754.2861328125
+    // console.log(rawEvent.nativeEvent.contentOffset.x)          // 12342.857421875,
+    // console.log(rawEvent.nativeEvent.layoutMeasurement.width)  //   411.4285583496094
+    // console.log(offsetX)
+    // console.log(rawEvent.nativeEvent.velocity.x)  // 왼 - 오른 +
+    const {
+      contentSize: { width: wholeLayoutSize },
+      contentOffset: { x: offset },
+      layoutMeasurement: { width: contentLayoutSize }
+    } = rawEvent.nativeEvent;
+    // wholeLayoutSize 가 contentLayoutSize * 31 보다 약간 크게 나와서 되는 듯?
+    // const currentIndex = 31 - Math.round((wholeLayoutSize - offset) / contentLayoutSize); // 뭔가 양쪽 다 느림.
+    const currentIndex = 31 - Math.floor((wholeLayoutSize - offset) / contentLayoutSize); // 얜 왼쪽 느리고 오른쪽 빠름.
+    // console.log(currentIndex)
+    this.setCurrentMonth(currentIndex); // 공통로직
+  }
+  
+  // 안드로이드는 이거 이상해서 onScroll 로 함. 공통 로직 위에 setCurrentMonth 로.
+  onVisibleIndicesChanged = (all, now) => {
+    // console.log("onVisibleIndicesChanged")
+    // if(isAndroid) return; // props 에 넣음
+    // const {
+    //   data,
+    //   numMonths,
+    //   currentMonth: _currentMonth,
+    // } = this.state;
+
+    // const {
+    //   updateMonthYear,
+    //   onMonthChange,
+    // } = this.props;
+
+    // "now" contains the inflight indices, whereas "all" reflects indices
+    // after scrolling has settled. Prioritize "now" for faster header updates.
+    const currentIndex = now[0] || all[0];
+    this.setCurrentMonth(currentIndex); // 이걸로 대체
+    // const currentMonth = data[currentIndex]; // a Moment date
+
+    // // Fire month/year update on month changes.  This is
+    // // necessary for the header and onMonthChange updates.
+    // if (!_currentMonth || !_currentMonth.isSame(currentMonth, 'month')) {
+    //   const currMonth = currentMonth && currentMonth.clone();
+    //   onMonthChange && onMonthChange(currMonth);
+    // }
+
+    // updateMonthYear && updateMonthYear(currentMonth, true);
+
+    // if (currentIndex === 0) {
+    //   this.shiftMonthsBackward(currentMonth);
+    // } else if (currentIndex > numMonths - 3) {
+    //   this.shiftMonthsForward(currentMonth);
+    // }
+    // this.setState({
+    //   currentMonth,
+    //   currentIndex,
+    // });
   }
 
   onLayout = event => {
@@ -275,7 +339,8 @@ export default class CalendarScroller extends Component {
           rowRenderer={this.rowRenderer}
           extendedState={this.props.renderMonthParams}
           initialRenderIndex={this.props.initialRenderIndex}
-          onVisibleIndicesChanged={this.onVisibleIndicesChanged}
+          onScroll={isAndroid ? this.onScroll : undefined}
+          onVisibleIndicesChanged={isAndroid ? undefined : this.onVisibleIndicesChanged}
           isHorizontal={this.props.horizontal}
           scrollViewProps={{
             showsHorizontalScrollIndicator: false,

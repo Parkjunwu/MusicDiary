@@ -22,6 +22,7 @@ import SettingAppStartPassword from '../screens/profileNav/SettingAppStartPasswo
 import FeelChange from '../screens/profileNav/FeelChange';
 import { FontAppliedBaseTextNeedFontSize } from '../styled-components/FontAppliedComponents';
 import { isAndroid } from '../utils';
+import SeeBlockUsers from '../screens/profileNav/SeeBlockUsers';
 
 const Stack = createNativeStackNavigator<ProfileListTabStackParamsList>();
 
@@ -172,6 +173,13 @@ const ProfileNav = () => {
         component={EditProfile}
         options={{
           title:"프로필 변경",
+        }}
+      />
+      <Stack.Screen
+        name="SeeBlockUsers"
+        component={SeeBlockUsers}
+        options={{
+          title:"차단 유저 목록",
         }}
       />
       

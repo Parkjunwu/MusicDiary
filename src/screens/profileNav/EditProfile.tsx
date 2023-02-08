@@ -20,6 +20,7 @@ import { FontAppliedBaseTextNeedFontSize, FontAppliedBaseTextInputNeedFontSize }
 import { ME_QUERY } from "../../gql/manyWriteQuery";
 import ScrollViewWithoutBounce from "../../components/shared/ScrollViewWithoutBounce";
 import KeyboardAwareScrollViewWithoutBounce from "../../components/shared/KeyboardAwareScrollViewWithoutBounce";
+import UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth from "../../components/upload/UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth";
 
 const CHECK_USER_NAME = gql`
   query checkUserName(
@@ -49,8 +50,10 @@ const EDIT_PROFILE_MUTATION = gql`
 `;
 
 const Container = styled.View`
-  background-color: ${props => props.theme.backgroundColor};
+  /* background-color: ${props => props.theme.backgroundColor}; */
   flex: 1;
+  /* 패드 에서 넣었는데 이상하면 빼고 */
+  margin-top: 10%;
 `;
 const AvatarContainer = styled.View`
   flex: 1;
@@ -284,6 +287,7 @@ const EditProfile = ({navigation,route}:Props) => {
   const onPressDeleteImage = () => setAvatar("");
 
   return (
+    <UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
     <KeyboardAwareScrollViewWithoutBounce>
       <DismissKeyboard>
         <Container>
@@ -329,6 +333,7 @@ const EditProfile = ({navigation,route}:Props) => {
         </Container>
       </DismissKeyboard>
     </KeyboardAwareScrollViewWithoutBounce>
+    </UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
   );
 };
 

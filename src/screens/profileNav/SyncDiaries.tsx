@@ -9,7 +9,8 @@ import { APP_PASSWORD } from "../../appPassword";
 import updateMeCache from "../../cache/updateMeCache";
 import updateThisMonthCalendarData from "../../cache/updateThisMonthCalendarData";
 import PasswordInput from "../../components/profileDrawerNav/relatedPassword/PasswordInput";
-import { isFirstFetchMap } from "../../cursorPagination";
+import UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth from "../../components/upload/UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth";
+import { alreadyFetchedQuerySet } from "../../cursorPagination";
 import { GET_MY_DIARY_LIST } from "../../gql/forCodeGen";
 import { ME_QUERY } from "../../gql/manyWriteQuery";
 import useSetPasswordFn from "../../hooks/profileDrawerNav/relatedPassword/useSetPasswordFn";
@@ -30,7 +31,7 @@ const SYNCHRONIZE_DIARY = gql`
 `;
 
 const Container = styled.View`
-  background-color: ${props=>props.theme.backgroundColor};
+  /* background-color: ${props=>props.theme.backgroundColor}; */
   padding: 40px 20px;
   flex: 1;
 `;
@@ -122,7 +123,8 @@ const SyncDiaries = ({navigation,route}:SyncDiariesProp) => {
           cache.evict({id: "ROOT_QUERY", fieldName: "getCalendarMonthlyData"}); // 이게 그건듯. 근데 캘린더가 보고 잇는 상태면 한번 더 받아지느데 뭐 그건 상관없을듯.
 
           // getMyDiaryList 의 cursor pagination 안되게 할라고 if 넣음. refetch 는 pagination 안들어가는듯
-          if(!isFirstFetchMap.getMyDiaryList) refetchGetMyDiaryList();
+          // if(!isFirstFetchMap.getMyDiaryList) refetchGetMyDiaryList();
+          if(alreadyFetchedQuerySet.has("getMyDiaryList")) refetchGetMyDiaryList();
           
           // 걍 me 를 한번 더 받아서 업데이트함.
           await getMeQuery();
@@ -188,23 +190,25 @@ const SyncDiaries = ({navigation,route}:SyncDiariesProp) => {
   } = useSetPasswordFn(setPassword);
 
   return (
-    <Container>
-      <TitleText fontSize={20}>현재 {diaryNumber} 개의 일기가 저장되어 있습니다. 모든 일기를 동기화 하시겠습니까?</TitleText>
-      <SubText fontSize={16}>동기화 하기 위해서는 비밀번호 설정이 필요합니다.</SubText>
-      <BottomContainer>
-        {showPassword ?
-          <PasswordInput
-            password={password}
-            writePassword={writePassword}
-            deletePassword={deletePassword}
-          />
-        :
-          <IsPasswordBtn onPress={onPressIsPasswordBtn}>
-            <IsPasswordBtnText fontSize={30}>동기화하기</IsPasswordBtnText>
-          </IsPasswordBtn>
-        }
-      </BottomContainer>
-    </Container>
+    <UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
+      <Container>
+        <TitleText fontSize={20}>현재 {diaryNumber} 개의 일기가 저장되어 있습니다. 모든 일기를 동기화 하시겠습니까?</TitleText>
+        <SubText fontSize={16}>동기화 하기 위해서는 비밀번호 설정이 필요합니다.</SubText>
+        <BottomContainer>
+          {showPassword ?
+            <PasswordInput
+              password={password}
+              writePassword={writePassword}
+              deletePassword={deletePassword}
+            />
+          :
+            <IsPasswordBtn onPress={onPressIsPasswordBtn}>
+              <IsPasswordBtnText fontSize={30}>동기화하기</IsPasswordBtnText>
+            </IsPasswordBtn>
+          }
+        </BottomContainer>
+      </Container>
+    </UploadHorizontalEmptyLayoutForBigScreenNeedScreenWidth>
   );
 };
 
